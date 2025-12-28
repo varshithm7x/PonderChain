@@ -7,7 +7,7 @@ This guide will help you set up **PonderChain** locally for development and test
 - **Node.js** (v16 or higher)
 - **Git**
 - **MetaMask** (Browser Extension)
-- **Lisk Sepolia ETH** (For Testnet deployment only) - [Faucet](https://lisk.com/faucet)
+- **Lisk Sepolia ETH** (For Testnet deployment only) - [Optimism Superchain Faucet](https://console.optimism.io/faucet)
 
 ---
 
@@ -70,7 +70,7 @@ We have a script that generates a fresh wallet and automatically saves the priva
 
 3.  **Fund your Wallet:**
     *   Copy the `NEW_ADDRESS`.
-    *   Go to the [Lisk Sepolia Faucet](https://lisk.com/faucet) and request funds.
+    *   Go to the [Optimism Superchain Faucet](https://console.optimism.io/faucet) and request funds (Select "Lisk Sepolia").
 
 ### Option B: Use Existing Wallet (Testnet)
 
