@@ -43,6 +43,74 @@ This guide will help you set up **PonderChain** locally for development and test
 
 ---
 
+## 🔐 Wallet Setup
+
+To interact with the blockchain (deploying contracts or using the app), you need to set up your wallet.
+
+### Option A: Generate a New Wallet (Recommended for Testnet)
+
+We have a script that generates a fresh wallet and automatically saves the private key to your `.env` file.
+
+1.  **Run the generator script:**
+    ```bash
+    cd contracts
+    node scripts/generateWallet.js
+    ```
+    *Output:*
+    ```text
+    NEW_ADDRESS=0x...
+    NEW_PRIVATE_KEY=0x...
+    Updated .env file with new wallet.
+    ```
+
+2.  **Import to MetaMask:**
+    *   Copy the `NEW_PRIVATE_KEY` from the terminal output.
+    *   Open MetaMask > **Account Icon** > **Add account** > **Import account**.
+    *   Paste the key.
+
+3.  **Fund your Wallet:**
+    *   Copy the `NEW_ADDRESS`.
+    *   Go to the [Lisk Sepolia Faucet](https://lisk.com/faucet) and request funds.
+
+### Option B: Use Existing Wallet (Testnet)
+
+Use this if you already have a testnet account you want to use.
+
+1.  **Get your Private Key from MetaMask:**
+    *   Open MetaMask extension.
+    *   Click the three dots menu (⋮) in the top right > **Account Details**.
+    *   Click **Show Private Key**.
+    *   Enter your password to reveal it and copy the key.
+
+2.  **Update Environment Variables:**
+    *   Open `contracts/.env`.
+    *   Set `PRIVATE_KEY=your_copied_private_key`.
+
+### Option C: For Local Development
+
+Use this if you are running the blockchain locally on your machine. Hardhat provides pre-funded test accounts.
+
+1.  **Find the Test Private Keys:**
+    *   When you run `node start-dev.js`, the terminal will display a list of 20 accounts.
+    *   *Alternatively, the default Hardhat Account #0 Private Key is:* `0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80`
+
+2.  **Import to MetaMask:**
+    *   Open MetaMask.
+    *   Click the **Account Icon** (circle at the top) > **Add account or hardware wallet** > **Import account**.
+    *   Paste the Private Key and click **Import**.
+    *   *You now have an account with 10,000 ETH on your local chain.*
+
+3.  **Connect MetaMask to Localhost:**
+    *   Click the Network dropdown (top left) in MetaMask.
+    *   Select **Localhost 8545**.
+    *   *If missing:* Settings > Networks > Add Network > Add manually:
+        *   **Network Name:** Localhost 8545
+        *   **RPC URL:** `http://127.0.0.1:8545`
+        *   **Chain ID:** `31337`
+        *   **Currency Symbol:** `ETH`
+
+---
+
 ## ⚙️ Environment Setup
 
 ### 1. Smart Contracts (`/contracts`)
