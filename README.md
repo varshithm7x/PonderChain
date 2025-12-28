@@ -31,68 +31,28 @@ Built for the **Lisk Hackathon** on Devfolio.
 
 ## 🚀 Getting Started
 
-### Prerequisites
+For a detailed step-by-step guide on setting up the project locally (including installation, environment variables, and running the local blockchain), please refer to the **[Development Guide](DEVELOPMENT.md)**.
 
-- Node.js v16+
-- MetaMask Wallet
-- Lisk Sepolia ETH (Get from [Lisk Faucet](https://lisk.com/faucet))
+### Quick Start (Local)
 
-### 1. Clone the Repository
+1.  **Clone the repo:**
+    ```bash
+    git clone https://github.com/yourusername/ponderchain.git
+    cd ponderchain
+    ```
 
-```bash
-git clone https://github.com/yourusername/ponderchain.git
-cd ponderchain
-```
+2.  **Install dependencies:**
+    ```bash
+    cd contracts && npm install && cd ..
+    cd frontend && npm install && cd ..
+    cd backend && npm install && cd ..
+    ```
 
-### 2. Smart Contracts Setup
-
-```bash
-cd contracts
-npm install
-
-# Create .env file
-cp .env.example .env
-# Add your PRIVATE_KEY and LISK_SEPOLIA_RPC_URL
-
-# Compile contracts
-npx hardhat compile
-
-# Deploy to Lisk Sepolia
-npx hardhat run scripts/deploy.js --network liskSepolia
-
-# (Optional) Seed test data
-npx hardhat run scripts/seed-data.js --network liskSepolia
-```
-
-### 3. Frontend Setup
-
-```bash
-cd ../frontend
-npm install
-
-# Create .env file
-cp .env.example .env
-# Add VITE_PONDERCHAIN_ADDRESS from deployment output
-
-# Start development server
-npm run dev
-```
-
-Visit `http://localhost:3000` to interact with the dApp.
-
-### 4. Backend Setup (Optional)
-
-```bash
-cd ../backend
-npm install
-
-# Create .env file
-cp .env.example .env
-# Add PONDERCHAIN_ADDRESS
-
-# Start server
-npm start
-```
+3.  **Run the automated dev script:**
+    ```bash
+    node start-dev.js
+    ```
+    This will start the local blockchain, deploy contracts, and launch the full stack.
 
 ---
 
