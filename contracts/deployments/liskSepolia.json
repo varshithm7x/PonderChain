@@ -1,0 +1,14 @@
+{
+  "network": "liskSepolia",
+  "chainId": 4202,
+  "deployer": "0x73f75CC1caA6bc2598aD5cD6EFdF8397E1EF0794",
+  "contracts": {
+    "PonderChain": "0xA12EFb16aCFC8879D4fE17c4CF29Ca499fd862F6",
+    "PonderNFT": "0x7ce4D31B0e414AF8aD7F81920361cB558312a78a"
+  },
+  "config": {
+    "minStakeAmount": "1000000000000000",
+    "platformFeePercent": 2
+  },
+  "timestamp": "2025-12-28T14:38:59.276Z"
+}

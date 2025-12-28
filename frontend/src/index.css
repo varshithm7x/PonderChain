@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🚀</text></svg>") 16 0, auto;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  background-color: #F7F9F9;
+  background-image: radial-gradient(#050505 1px, transparent 1px);
+  background-size: 20px 20px;
+  min-height: 100vh;
+  color: #050505;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F7F9F9;
+  border-left: 2px solid #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FF6B6B;
+  border: 2px solid #050505;
+  box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFDE00;
+}
+
+@layer components {
+  .neo-card {
+    @apply bg-white border-2 border-black shadow-neo transition-all duration-200;
+  }
+  
+  .neo-button {
+    @apply px-6 py-3 bg-neo-yellow border-2 border-black shadow-neo font-bold text-black transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none hover:bg-yellow-400;
+  }
+
+  .neo-input {
+    @apply w-full px-4 py-3 bg-white border-2 border-black shadow-neo-sm focus:outline-none focus:shadow-neo transition-all;
+  }
+
+  .neo-badge {
+    @apply px-3 py-1 text-sm font-bold border-2 border-black shadow-neo-sm;
+  }
+
+  /* Legacy class mappings to Neobrutalism */
+  .glass, .glass-dark, .card {
+    @apply neo-card;
+  }
+
+  .btn-primary {
+    @apply neo-button bg-neo-green hover:bg-teal-400 text-black;
+  }
+
+  .btn-secondary {
+    @apply neo-button bg-white hover:bg-gray-100 text-black;
+  }
+
+  .input {
+    @apply neo-input;
+  }
+
+  .badge {
+    @apply neo-badge;
+  }
+
+  .badge-success {
+    @apply bg-neo-green text-black;
+  }
+
+  .badge-warning {
+    @apply bg-neo-yellow text-black;
+  }
+
+  .badge-danger {
+    @apply bg-neo-pink text-black;
+  }
+
+  .badge-info {
+    @apply bg-neo-blue text-white;
+  }
+  
+  .gradient-text {
+    @apply text-black font-black;
+    background: none;
+    -webkit-text-fill-color: initial;
+  }
+}
+
