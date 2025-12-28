@@ -16,8 +16,8 @@ This guide will help you set up **PonderChain** locally for development and test
 1.  **Fork & Clone the Repository**
 
     ```bash
-    git clone https://github.com/YOUR_USERNAME/ponderchain.git
-    cd ponderchain
+    git clone https://github.com/varshithm7x/PonderChain.git
+    cd PonderChain
     ```
 
 2.  **Install Dependencies**

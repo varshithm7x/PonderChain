@@ -37,8 +37,8 @@ For a detailed step-by-step guide on setting up the project locally (including i
 
 1.  **Clone the repo:**
     ```bash
-    git clone https://github.com/yourusername/ponderchain.git
-    cd ponderchain
+    git clone https://github.com/varshithm7x/PonderChain.git
+    cd PonderChain
     ```
 
 2.  **Install dependencies:**
