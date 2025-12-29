@@ -58,6 +58,7 @@ export default function PollCard({ poll, index = 0 }) {
             ? ((poll.optionVotes[idx] / totalVotes) * 100).toFixed(0) 
             : 0
           const isWinner = !isActive && idx === poll.winningOption
+          const showResults = !isActive
 
           return (
             <div
@@ -69,17 +70,21 @@ export default function PollCard({ poll, index = 0 }) {
               }`}
             >
               {/* Progress bar */}
-              <div
-                className={`absolute inset-y-0 left-0 border-r-2 border-black ${
-                  isWinner ? 'bg-green-400' : 'bg-neo-yellow'
-                }`}
-                style={{ width: `${percentage}%`, opacity: 0.5 }}
-              />
+              {showResults && (
+                <div
+                  className={`absolute inset-y-0 left-0 border-r-2 border-black ${
+                    isWinner ? 'bg-green-400' : 'bg-neo-yellow'
+                  }`}
+                  style={{ width: `${percentage}%`, opacity: 0.5 }}
+                />
+              )}
               <div className="relative flex items-center justify-between z-10">
                 <span className={`text-sm font-bold text-black`}>
                   {option}
                 </span>
-                <span className="text-xs font-black text-black">{percentage}%</span>
+                {showResults && (
+                  <span className="text-xs font-black text-black">{percentage}%</span>
+                )}
               </div>
             </div>
           )

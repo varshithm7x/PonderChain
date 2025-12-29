@@ -207,6 +207,7 @@ export default function PollPage() {
           {/* Options Column */}
           <div className="md:col-span-2 space-y-4">
             {poll.options.map((option, idx) => {
+              const showResults = hasPredicted || isClosed
               const percentage = totalVotes > 0 
                 ? ((poll.optionVotes[idx] / totalVotes) * 100).toFixed(1) 
                 : 0
@@ -228,10 +229,12 @@ export default function PollPage() {
                   } ${!isVotingOpen || hasPredicted ? 'cursor-default' : 'cursor-pointer'}`}
                 >
                   {/* Progress Bar */}
-                  <div
-                    className="absolute inset-0 opacity-20 bg-black"
-                    style={{ width: `${percentage}%` }}
-                  />
+                  {showResults && (
+                    <div
+                      className="absolute inset-0 opacity-20 bg-black"
+                      style={{ width: `${percentage}%` }}
+                    />
+                  )}
 
                   <div className="relative flex items-center justify-between z-10">
                     <div className="flex items-center space-x-3">
@@ -248,7 +251,9 @@ export default function PollPage() {
                       {isWinner && <Trophy className="w-4 h-4 text-black" />}
                       {isUserChoice && <span className="text-xs font-bold text-black bg-white px-1 border border-black">(YOUR CHOICE)</span>}
                     </div>
-                    <span className="text-black font-mono font-bold">{percentage}%</span>
+                    <span className="text-black font-mono font-bold">
+                      {showResults ? `${percentage}%` : '???'}
+                    </span>
                   </div>
                 </button>
               )
