@@ -53,19 +53,5 @@ We will use **Vercel** to host your React frontend.
     -   `VITE_PONDERNFT_ADDRESS`: `0x7ce4D31B0e414AF8aD7F81920361cB558312a78a`
 6.  Click **Deploy**.
 
----
-
-## 4️⃣ Going to Mainnet (Real Production)
-Currently, you are on **Lisk Sepolia Testnet**. To go to **Mainnet** (Real Money):
-
-1.  **Deploy Contracts to Lisk Mainnet**:
-    ```bash
-    npx hardhat run scripts/deploy.js --network liskMainnet
-    ```
-2.  **Update Environment Variables**:
-    -   Update `PONDERCHAIN_ADDRESS` in Render.
-    -   Update `VITE_PONDERCHAIN_ADDRESS` in Vercel.
-    -   Update `LISK_SEPOLIA_RPC_URL` to the Mainnet RPC in Render.
-
 ## ✅ Done!
 Your site is now live! Users can visit your Vercel URL to interact with PonderChain.
