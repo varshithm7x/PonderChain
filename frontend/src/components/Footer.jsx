@@ -43,8 +43,8 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2">
             <Link to="/" className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 border-2 border-black bg-neo-yellow flex items-center justify-center shadow-neo-sm">
-                <span className="text-black font-black text-xl">P</span>
+              <div className="w-10 h-10 border-2 border-black bg-neo-black flex items-center justify-center shadow-neo-sm">
+                <img src="/veto.webp" alt="VETO" className="w-6 h-6 object-contain" />
               </div>
               <span className="text-xl font-black text-black uppercase">VETO</span>
             </Link>
