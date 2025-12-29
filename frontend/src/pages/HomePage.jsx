@@ -30,9 +30,12 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-6xl md:text-8xl font-black tracking-tighter text-black"
         >
-          PREDICT THE <span className="bg-neo-yellow px-2 border-2 border-black shadow-neo-sm">FUTURE</span>
-          <br />
-          WIN <span className="bg-neo-green px-2 border-2 border-black shadow-neo-sm">REWARDS</span>
+          <span className="block mb-2 md:mb-6">
+            PREDICT THE <span className="bg-neo-yellow px-2 border-2 border-black shadow-neo-sm">FUTURE</span>
+          </span>
+          <span className="block">
+            WIN <span className="bg-neo-green px-2 border-2 border-black shadow-neo-sm">REWARDS</span>
+          </span>
         </motion.h1>
         
         <motion.p

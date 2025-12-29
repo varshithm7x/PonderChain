@@ -8,7 +8,16 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🚀</text></svg>") 16 0, auto;
+  cursor: url("data:image/svg+xml;utf8,<svg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M2 2L12 28L16 16L28 12L2 2Z' fill='black' stroke='white' stroke-width='2'/></svg>") 2 2, auto;
+}
+
+a, button, [role="button"], .cursor-pointer, label, input[type="checkbox"], input[type="radio"], select {
+  cursor: pointer;
+}
+
+::selection {
+  background-color: #000000;
+  color: #ffffff;
 }
 
 html {
@@ -18,8 +27,6 @@ html {
 body {
   font-family: 'Space Grotesk', system-ui, sans-serif;
   background-color: #F7F9F9;
-  background-image: radial-gradient(#050505 1px, transparent 1px);
-  background-size: 20px 20px;
   min-height: 100vh;
   color: #050505;
   -webkit-font-smoothing: antialiased;
