@@ -1,6 +1,6 @@
 # 🛠️ Local Development Guide
 
-This guide will help you set up **PonderChain** locally for development and testing.
+This guide will help you set up **VETO** locally for development and testing.
 
 ## 📋 Prerequisites
 
@@ -16,8 +16,8 @@ This guide will help you set up **PonderChain** locally for development and test
 1.  **Fork & Clone the Repository**
 
     ```bash
-    git clone https://github.com/varshithm7x/PonderChain.git
-    cd PonderChain
+    git clone https://github.com/varshithm7x/VETO.git
+    cd VETO
     ```
 
 2.  **Install Dependencies**

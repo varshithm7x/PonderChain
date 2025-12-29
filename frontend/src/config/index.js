@@ -33,13 +33,13 @@ export const DEFAULT_NETWORK = NETWORKS.liskSepolia;
 export const CONTRACT_ADDRESSES = {
   // Lisk Sepolia Testnet
   4202: {
-    PonderChain: import.meta.env.VITE_PONDERCHAIN_ADDRESS_TESTNET || import.meta.env.VITE_PONDERCHAIN_ADDRESS || '0x0000000000000000000000000000000000000000',
-    PonderNFT: import.meta.env.VITE_PONDERNFT_ADDRESS_TESTNET || import.meta.env.VITE_PONDERNFT_ADDRESS || '0x0000000000000000000000000000000000000000',
+    Veto: import.meta.env.VITE_VETO_ADDRESS_TESTNET || import.meta.env.VITE_VETO_ADDRESS || '0x0000000000000000000000000000000000000000',
+    VetoNFT: import.meta.env.VITE_VETONFT_ADDRESS_TESTNET || import.meta.env.VITE_VETONFT_ADDRESS || '0x0000000000000000000000000000000000000000',
   },
   // Localhost
   31337: {
-    PonderChain: import.meta.env.VITE_PONDERCHAIN_ADDRESS_LOCAL || '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-    PonderNFT: import.meta.env.VITE_PONDERNFT_ADDRESS_LOCAL || '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+    Veto: import.meta.env.VITE_VETO_ADDRESS_LOCAL || '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    VetoNFT: import.meta.env.VITE_VETONFT_ADDRESS_LOCAL || '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
   },
 };
 
@@ -58,7 +58,7 @@ export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:30
 
 // App Configuration
 export const APP_CONFIG = {
-  name: 'PonderChain',
+  name: 'VETO',
   description: 'Decentralized Predictive Polling Game on Lisk',
   version: '1.0.0',
   minStakeAmount: '0.001', // in ETH

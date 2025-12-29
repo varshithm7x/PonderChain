@@ -46,7 +46,7 @@ export default function Footer() {
               <div className="w-10 h-10 border-2 border-black bg-neo-yellow flex items-center justify-center shadow-neo-sm">
                 <span className="text-black font-black text-xl">P</span>
               </div>
-              <span className="text-xl font-black text-black uppercase">PonderChain</span>
+              <span className="text-xl font-black text-black uppercase">VETO</span>
             </Link>
             <p className="text-black font-bold text-sm mb-4 max-w-xs">
               A DECENTRALIZED PREDICTIVE POLLING GAME ON LISK BLOCKCHAIN. PREDICT THE MAJORITY, EARN REWARDS.

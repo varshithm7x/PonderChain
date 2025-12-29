@@ -1,6 +1,6 @@
-# 🧪 PonderChain Testing Checklist & Guide
+# 🧪 VETO Testing Checklist & Guide
 
-This document outlines the test plan for PonderChain and provides instructions on how to run the full application locally for testing.
+This document outlines the test plan for VETO and provides instructions on how to run the full application locally for testing.
 
 ## 🏗️ Automated Tests
 
@@ -86,7 +86,7 @@ Open Terminal 2:
 cd contracts
 npx hardhat run scripts/deploy.js --network localhost
 ```
-*Copy the `PonderChain` and `PonderNFT` addresses from the output.*
+*Copy the `VETO` and `PonderNFT` addresses from the output.*
 
 ### Step 3: Configure Frontend
 Edit `frontend/.env`:

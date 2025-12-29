@@ -1,5 +1,5 @@
 {
-  "name": "ponderchain-backend",
+  "name": "veto-backend",
   "version": "1.0.0",
   "description": "PonderChain API Service",
   "main": "index.js",

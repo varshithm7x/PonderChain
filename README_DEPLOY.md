@@ -1,6 +1,6 @@
-# 🚀 Deployment Guide for PonderChain
+# 🚀 Deployment Guide for VETO
 
-This guide will help you deploy your PonderChain application to the public web.
+This guide will help you deploy your VETO application to the public web.
 
 ## 🏗️ Architecture Overview
 Your application consists of three parts:
@@ -54,4 +54,4 @@ We will use **Vercel** to host your React frontend.
 6.  Click **Deploy**.
 
 ## ✅ Done!
-Your site is now live! Users can visit your Vercel URL to interact with PonderChain.
+Your site is now live! Users can visit your Vercel URL to interact with VETO.

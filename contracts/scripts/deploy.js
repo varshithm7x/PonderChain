@@ -1,34 +1,34 @@
 const hre = require("hardhat");
 
 async function main() {
-  console.log("🚀 Starting PonderChain deployment...\n");
+  console.log("🚀 Starting Veto deployment...\n");
 
   const [deployer] = await hre.ethers.getSigners();
   console.log("📍 Deploying contracts with account:", deployer.address);
   console.log("💰 Account balance:", (await deployer.provider.getBalance(deployer.address)).toString());
   console.log("");
 
-  // Deploy PonderChain main contract
-  console.log("📝 Deploying PonderChain contract...");
-  const PonderChain = await hre.ethers.getContractFactory("PonderChain");
+  // Deploy Veto main contract
+  console.log("📝 Deploying Veto contract...");
+  const Veto = await hre.ethers.getContractFactory("Veto");
   
   // Fee recipient is the deployer, min stake is 0.001 ETH
   const minStakeAmount = hre.ethers.parseEther("0.001");
-  const ponderChain = await PonderChain.deploy(deployer.address, minStakeAmount);
-  await ponderChain.waitForDeployment();
+  const veto = await Veto.deploy(deployer.address, minStakeAmount);
+  await veto.waitForDeployment();
   
-  const ponderChainAddress = await ponderChain.getAddress();
-  console.log("✅ PonderChain deployed to:", ponderChainAddress);
+  const vetoAddress = await veto.getAddress();
+  console.log("✅ Veto deployed to:", vetoAddress);
   console.log("");
 
-  // Deploy PonderNFT contract
-  console.log("🎨 Deploying PonderNFT contract...");
-  const PonderNFT = await hre.ethers.getContractFactory("PonderNFT");
-  const ponderNFT = await PonderNFT.deploy();
-  await ponderNFT.waitForDeployment();
+  // Deploy VetoNFT contract
+  console.log("🎨 Deploying VetoNFT contract...");
+  const VetoNFT = await hre.ethers.getContractFactory("VetoNFT");
+  const vetoNFT = await VetoNFT.deploy();
+  await vetoNFT.waitForDeployment();
   
-  const ponderNFTAddress = await ponderNFT.getAddress();
-  console.log("✅ PonderNFT deployed to:", ponderNFTAddress);
+  const vetoNFTAddress = await vetoNFT.getAddress();
+  console.log("✅ VetoNFT deployed to:", vetoNFTAddress);
   console.log("");
 
   // Log deployment summary
@@ -37,8 +37,8 @@ async function main() {
   console.log("═══════════════════════════════════════════════════════════");
   console.log(`Network:            ${hre.network.name}`);
   console.log(`Deployer:           ${deployer.address}`);
-  console.log(`PonderChain:        ${ponderChainAddress}`);
-  console.log(`PonderNFT:          ${ponderNFTAddress}`);
+  console.log(`Veto:               ${vetoAddress}`);
+  console.log(`VetoNFT:            ${vetoNFTAddress}`);
   console.log(`Min Stake:          ${hre.ethers.formatEther(minStakeAmount)} ETH`);
   console.log(`Platform Fee:       2%`);
   console.log("═══════════════════════════════════════════════════════════");
@@ -50,8 +50,8 @@ async function main() {
     chainId: hre.network.config.chainId,
     deployer: deployer.address,
     contracts: {
-      PonderChain: ponderChainAddress,
-      PonderNFT: ponderNFTAddress,
+      Veto: vetoAddress,
+      VetoNFT: vetoNFTAddress,
     },
     config: {
       minStakeAmount: minStakeAmount.toString(),
@@ -79,8 +79,8 @@ async function main() {
   // Verification instructions
   if (hre.network.name !== "hardhat" && hre.network.name !== "localhost") {
     console.log("📋 To verify contracts on Blockscout:");
-    console.log(`   npx hardhat verify --network ${hre.network.name} ${ponderChainAddress} "${deployer.address}" "${minStakeAmount}"`);
-    console.log(`   npx hardhat verify --network ${hre.network.name} ${ponderNFTAddress}`);
+    console.log(`   npx hardhat verify --network ${hre.network.name} ${vetoAddress} "${deployer.address}" "${minStakeAmount}"`);
+    console.log(`   npx hardhat verify --network ${hre.network.name} ${vetoNFTAddress}`);
   }
 
   console.log("\n🎉 Deployment completed successfully!");

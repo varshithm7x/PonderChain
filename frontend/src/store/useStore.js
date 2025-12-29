@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { ethers } from 'ethers';
 import { NETWORKS, DEFAULT_NETWORK, getContractAddress } from '../config';
-import { PONDERCHAIN_ABI, PONDERNFT_ABI } from '../contracts/abi';
+import { VETO_ABI, VETONFT_ABI } from '../contracts/abi';
 
 const useStore = create((set, get) => ({
   // Wallet State
@@ -14,8 +14,8 @@ const useStore = create((set, get) => ({
   error: null,
 
   // Contracts
-  ponderChainContract: null,
-  ponderNFTContract: null,
+  vetoContract: null,
+  vetoNFTContract: null,
 
   // App State
   polls: [],
@@ -58,24 +58,24 @@ const useStore = create((set, get) => ({
       const chainId = Number(network.chainId);
 
       // Initialize contracts
-      const ponderChainAddress = getContractAddress('PonderChain', chainId);
-      const ponderNFTAddress = getContractAddress('PonderNFT', chainId);
+      const vetoAddress = getContractAddress('Veto', chainId);
+      const vetoNFTAddress = getContractAddress('VetoNFT', chainId);
 
-      let ponderChainContract = null;
-      let ponderNFTContract = null;
+      let vetoContract = null;
+      let vetoNFTContract = null;
 
-      if (ponderChainAddress && ponderChainAddress !== '0x0000000000000000000000000000000000000000') {
-        ponderChainContract = new ethers.Contract(
-          ponderChainAddress,
-          PONDERCHAIN_ABI,
+      if (vetoAddress && vetoAddress !== '0x0000000000000000000000000000000000000000') {
+        vetoContract = new ethers.Contract(
+          vetoAddress,
+          VETO_ABI,
           signer
         );
       }
 
-      if (ponderNFTAddress && ponderNFTAddress !== '0x0000000000000000000000000000000000000000') {
-        ponderNFTContract = new ethers.Contract(
-          ponderNFTAddress,
-          PONDERNFT_ABI,
+      if (vetoNFTAddress && vetoNFTAddress !== '0x0000000000000000000000000000000000000000') {
+        vetoNFTContract = new ethers.Contract(
+          vetoNFTAddress,
+          VETONFT_ABI,
           signer
         );
       }
@@ -85,8 +85,8 @@ const useStore = create((set, get) => ({
         chainId,
         provider,
         signer,
-        ponderChainContract,
-        ponderNFTContract,
+        vetoContract,
+        vetoNFTContract,
         isConnecting: false,
       });
 
@@ -160,8 +160,8 @@ const useStore = create((set, get) => ({
       chainId: null,
       provider: null,
       signer: null,
-      ponderChainContract: null,
-      ponderNFTContract: null,
+      vetoContract: null,
+      vetoNFTContract: null,
       userStats: null,
       userPredictions: {},
     });
@@ -227,13 +227,13 @@ const useStore = create((set, get) => ({
 
   // Fetch Active Polls
   fetchActivePolls: async () => {
-    const { ponderChainContract } = get();
-    if (!ponderChainContract) return;
+    const { vetoContract } = get();
+    if (!vetoContract) return;
 
     set({ isLoading: true });
 
     try {
-      const polls = await ponderChainContract.getActivePolls();
+      const polls = await vetoContract.getActivePolls();
       const formattedPolls = polls.map(formatPoll);
       set({ activePolls: formattedPolls, isLoading: false });
       return formattedPolls;
@@ -246,13 +246,13 @@ const useStore = create((set, get) => ({
 
   // Fetch Closed Polls
   fetchClosedPolls: async () => {
-    const { ponderChainContract } = get();
-    if (!ponderChainContract) return;
+    const { vetoContract } = get();
+    if (!vetoContract) return;
 
     set({ isLoading: true });
 
     try {
-      const polls = await ponderChainContract.getClosedPolls();
+      const polls = await vetoContract.getClosedPolls();
       const formattedPolls = polls.map(formatPoll);
       set({ closedPolls: formattedPolls, isLoading: false });
       return formattedPolls;
@@ -265,11 +265,11 @@ const useStore = create((set, get) => ({
 
   // Fetch Single Poll
   fetchPoll: async (pollId) => {
-    const { ponderChainContract } = get();
-    if (!ponderChainContract) return null;
+    const { vetoContract } = get();
+    if (!vetoContract) return null;
 
     try {
-      const poll = await ponderChainContract.getPoll(pollId);
+      const poll = await vetoContract.getPoll(pollId);
       return formatPoll(poll);
     } catch (error) {
       console.error('Failed to fetch poll:', error);
@@ -279,11 +279,11 @@ const useStore = create((set, get) => ({
 
   // Fetch User Prediction for a Poll
   fetchUserPrediction: async (pollId) => {
-    const { ponderChainContract, account } = get();
-    if (!ponderChainContract || !account) return null;
+    const { vetoContract, account } = get();
+    if (!vetoContract || !account) return null;
 
     try {
-      const prediction = await ponderChainContract.getUserPrediction(pollId, account);
+      const prediction = await vetoContract.getUserPrediction(pollId, account);
       const formattedPrediction = {
         optionIndex: Number(prediction.optionIndex),
         amount: ethers.formatEther(prediction.amount),
@@ -307,14 +307,14 @@ const useStore = create((set, get) => ({
 
   // Fetch User Stats
   fetchUserStats: async (address = null) => {
-    const { ponderChainContract, account } = get();
-    if (!ponderChainContract) return null;
+    const { vetoContract, account } = get();
+    if (!vetoContract) return null;
 
     const targetAddress = address || account;
     if (!targetAddress) return null;
 
     try {
-      const stats = await ponderChainContract.getUserStats(targetAddress);
+      const stats = await vetoContract.getUserStats(targetAddress);
       const formattedStats = {
         totalPredictions: Number(stats.totalPredictions),
         correctPredictions: Number(stats.correctPredictions),
@@ -340,11 +340,11 @@ const useStore = create((set, get) => ({
 
   // Fetch Leaderboard
   fetchLeaderboard: async (limit = 20) => {
-    const { ponderChainContract } = get();
-    if (!ponderChainContract) return [];
+    const { vetoContract } = get();
+    if (!vetoContract) return [];
 
     try {
-      const leaderboard = await ponderChainContract.getLeaderboard(limit);
+      const leaderboard = await vetoContract.getLeaderboard(limit);
       const formattedLeaderboard = leaderboard.map((entry, index) => ({
         rank: index + 1,
         address: entry.user,
@@ -363,11 +363,11 @@ const useStore = create((set, get) => ({
 
   // Create Poll
   createPoll: async (question, options, durationInSeconds, rewardPoolInEth) => {
-    const { ponderChainContract } = get();
-    if (!ponderChainContract) throw new Error('Contract not initialized');
+    const { vetoContract } = get();
+    if (!vetoContract) throw new Error('Contract not initialized');
 
     // Manual gas limit to bypass estimateGas issues on L2s
-    const tx = await ponderChainContract.createPoll(
+    const tx = await vetoContract.createPoll(
       question,
       options,
       durationInSeconds,
@@ -382,7 +382,7 @@ const useStore = create((set, get) => ({
     // Find PollCreated event
     const event = receipt.logs.find(log => {
       try {
-        const parsed = ponderChainContract.interface.parseLog(log);
+        const parsed = vetoContract.interface.parseLog(log);
         return parsed.name === 'PollCreated';
       } catch {
         return false;
@@ -390,7 +390,7 @@ const useStore = create((set, get) => ({
     });
 
     if (event) {
-      const parsed = ponderChainContract.interface.parseLog(event);
+      const parsed = vetoContract.interface.parseLog(event);
       return Number(parsed.args.pollId);
     }
 
@@ -399,10 +399,10 @@ const useStore = create((set, get) => ({
 
   // Submit Prediction
   submitPrediction: async (pollId, optionIndex, stakeAmountInEth) => {
-    const { ponderChainContract } = get();
-    if (!ponderChainContract) throw new Error('Contract not initialized');
+    const { vetoContract } = get();
+    if (!vetoContract) throw new Error('Contract not initialized');
 
-    const tx = await ponderChainContract.submitPrediction(
+    const tx = await vetoContract.submitPrediction(
       pollId,
       optionIndex,
       { value: ethers.parseEther(stakeAmountInEth) }
@@ -414,20 +414,20 @@ const useStore = create((set, get) => ({
 
   // Close Poll
   closePoll: async (pollId) => {
-    const { ponderChainContract } = get();
-    if (!ponderChainContract) throw new Error('Contract not initialized');
+    const { vetoContract } = get();
+    if (!vetoContract) throw new Error('Contract not initialized');
 
-    const tx = await ponderChainContract.closePoll(pollId);
+    const tx = await vetoContract.closePoll(pollId);
     await tx.wait();
     return true;
   },
 
   // Distribute Rewards
   distributeRewards: async (pollId) => {
-    const { ponderChainContract } = get();
-    if (!ponderChainContract) throw new Error('Contract not initialized');
+    const { vetoContract } = get();
+    if (!vetoContract) throw new Error('Contract not initialized');
 
-    const tx = await ponderChainContract.distributeRewards(pollId);
+    const tx = await vetoContract.distributeRewards(pollId);
     await tx.wait();
     return true;
   },

@@ -1,5 +1,5 @@
-// PonderChain Contract ABI
-export const PONDERCHAIN_ABI = [
+// Veto Contract ABI
+export const VETO_ABI = [
   // Events
   "event PollCreated(uint256 indexed pollId, address indexed creator, string question, uint256 rewardPool, uint256 endTime)",
   "event PredictionSubmitted(uint256 indexed pollId, address indexed user, uint256 optionIndex, uint256 amount)",
@@ -111,8 +111,8 @@ export const PONDERCHAIN_ABI = [
   "function distributeRewards(uint256 _pollId)",
 ];
 
-// PonderNFT Contract ABI
-export const PONDERNFT_ABI = [
+// VetoNFT Contract ABI
+export const VETONFT_ABI = [
   "function mintBadge(address _recipient, uint8 _badgeType) returns (uint256)",
   "function hasBadge(address, uint8) view returns (bool)",
   "function getUserBadges(address _user) view returns (uint8[])",

@@ -1,8 +1,8 @@
-# 🧠 PonderChain
+# 🧠 VETO
 
 **Decentralized Predictive Polling Game on Lisk**
 
-PonderChain is a decentralized application (dApp) where users earn rewards by correctly predicting the majority choice on polls. Inspired by the Keynesian Beauty Contest concept, it combines game theory, social prediction, and blockchain incentives.
+VETO is a decentralized application (dApp) where users earn rewards by correctly predicting the majority choice on polls. Inspired by the Keynesian Beauty Contest concept, it combines game theory, social prediction, and blockchain incentives.
 
 Built for the **Lisk Hackathon** on Devfolio.
 
@@ -37,8 +37,8 @@ For a detailed step-by-step guide on setting up the project locally (including i
 
 1.  **Clone the repo:**
     ```bash
-    git clone https://github.com/varshithm7x/PonderChain.git
-    cd PonderChain
+    git clone https://github.com/varshithm7x/VETO.git
+    cd VETO
     ```
 
 2.  **Install dependencies:**
@@ -58,7 +58,7 @@ For a detailed step-by-step guide on setting up the project locally (including i
 
 ## 💰 Revenue Model
 
-PonderChain implements a sustainable revenue model:
+VETO implements a sustainable revenue model:
 
 1.  **Platform Fee:** A 2% fee is deducted from every poll's reward pool upon creation. This fee is sent to the admin/treasury wallet to support development and maintenance.
 2.  **Sponsored Polls:** Brands can pay to create featured polls to gather market sentiment.
@@ -70,12 +70,12 @@ PonderChain implements a sustainable revenue model:
 
 | Contract | Description |
 | :--- | :--- |
-| `PonderChain.sol` | Main logic for creating polls, voting, and distributing rewards. |
+| `VETO.sol` | Main logic for creating polls, voting, and distributing rewards. |
 | `PonderNFT.sol` | ERC721 contract for achievement badges. |
 
 **Verified Contract Addresses (Lisk Sepolia):**
 
-- **PonderChain:** `[DEPLOYED_ADDRESS_HERE]`
+- **VETO:** `[DEPLOYED_ADDRESS_HERE]`
 - **PonderNFT:** `[DEPLOYED_ADDRESS_HERE]`
 
 ---

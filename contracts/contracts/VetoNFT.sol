@@ -7,10 +7,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
- * @title PonderNFT
- * @dev NFT reward badges for top PonderChain predictors
+ * @title VetoNFT
+ * @dev NFT reward badges for top Veto predictors
  */
-contract PonderNFT is ERC721, ERC721URIStorage, Ownable {
+contract VetoNFT is ERC721, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
@@ -44,7 +44,7 @@ contract PonderNFT is ERC721, ERC721URIStorage, Ownable {
         BadgeType badgeType
     );
 
-    constructor() ERC721("PonderChain Badge", "PONDER") {
+    constructor() ERC721("Veto Badge", "VETO") {
         // Set default badge URIs
         badgeURIs[BadgeType.FIRST_PREDICTION] = "ipfs://QmFirstPrediction";
         badgeURIs[BadgeType.STREAK_3] = "ipfs://QmStreak3";

@@ -39,9 +39,9 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
             <div className="w-12 h-12 bg-neo-black flex items-center justify-center border-2 border-black shadow-neo-sm group-hover:shadow-neo transition-all">
-              <span className="text-neo-yellow font-black text-2xl">P</span>
+              <img src="/veto.webp" alt="VETO" className="w-8 h-8 object-contain" />
             </div>
-            <span className="text-2xl font-black text-black tracking-tighter uppercase">PonderChain</span>
+            <span className="text-2xl font-black text-black tracking-tighter uppercase">VETO</span>
           </Link>
 
           {/* Desktop Navigation */}

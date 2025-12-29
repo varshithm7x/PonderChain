@@ -1,6 +1,6 @@
 # 🚀 Deploying to Lisk Sepolia Testnet
 
-To deploy your PonderChain contracts to the Lisk Sepolia Testnet, follow these steps:
+To deploy your VETO contracts to the Lisk Sepolia Testnet, follow these steps:
 
 ## 1. Fund Your Wallet
 Your deployment account has **0 ETH** on Lisk Sepolia. You need to obtain testnet tokens.
@@ -25,7 +25,7 @@ After deployment, the script will print the contract addresses. Use them to veri
 Replace `PONDERCHAIN_ADDRESS` and `PONDERNFT_ADDRESS` with the actual addresses from the deployment output.
 
 ```bash
-# Verify PonderChain (Arguments: Owner Address, Min Stake)
+# Verify VETO (Arguments: Owner Address, Min Stake)
 npx hardhat verify --network liskSepolia PONDERCHAIN_ADDRESS "0x0599858F0dC52cf2769212c42cd2476D6F6bCc36" "1000000000000000"
 
 # Verify PonderNFT

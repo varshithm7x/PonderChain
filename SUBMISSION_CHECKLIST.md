@@ -14,7 +14,7 @@
 - [ ] Create Pitch Deck (PDF/Slides)
 
 ## 3. Submission Form
-- [ ] Project Name: PonderChain
+- [ ] Project Name: VETO
 - [ ] Tagline: Decentralized Predictive Polling Game
 - [ ] Description: A game-theory based polling dApp where users earn rewards by predicting the majority choice.
 - [ ] GitHub Repo URL

@@ -1,7 +1,7 @@
 const hre = require("hardhat");
 
 async function main() {
-  console.log("🌱 Seeding PonderChain with test data...\n");
+  console.log("🌱 Seeding Veto with test data...\n");
 
   const [deployer, user1, user2, user3] = await hre.ethers.getSigners();
 
@@ -16,14 +16,14 @@ async function main() {
   }
 
   const deployment = JSON.parse(fs.readFileSync(deploymentPath, "utf8"));
-  const ponderChainAddress = deployment.contracts.PonderChain;
+  const vetoAddress = deployment.contracts.Veto;
 
-  console.log("📍 PonderChain address:", ponderChainAddress);
+  console.log("📍 Veto address:", vetoAddress);
   console.log("");
 
   // Connect to contract
-  const PonderChain = await hre.ethers.getContractFactory("PonderChain");
-  const ponderChain = PonderChain.attach(ponderChainAddress);
+  const Veto = await hre.ethers.getContractFactory("Veto");
+  const veto = Veto.attach(vetoAddress);
 
   // Seed Polls
   const polls = [
@@ -66,7 +66,7 @@ async function main() {
     console.log(`  Creating poll ${i + 1}: "${poll.question.substring(0, 50)}..."`);
     
     try {
-      const tx = await ponderChain.createPoll(
+      const tx = await veto.createPoll(
         poll.question,
         poll.options,
         poll.duration,
@@ -87,7 +87,7 @@ async function main() {
     
     // User 1 predictions
     try {
-      await ponderChain.connect(user1).submitPrediction(1, 2, { value: stakeAmount }); // Lisk
+      await veto.connect(user1).submitPrediction(1, 2, { value: stakeAmount }); // Lisk
       console.log("  ✅ User1 predicted on Poll 1");
     } catch (e) {
       console.log("  ⚠️ User1 prediction failed:", e.message);
@@ -95,7 +95,7 @@ async function main() {
 
     // User 2 predictions
     try {
-      await ponderChain.connect(user2).submitPrediction(1, 0, { value: stakeAmount }); // Ethereum
+      await veto.connect(user2).submitPrediction(1, 0, { value: stakeAmount }); // Ethereum
       console.log("  ✅ User2 predicted on Poll 1");
     } catch (e) {
       console.log("  ⚠️ User2 prediction failed:", e.message);
@@ -103,7 +103,7 @@ async function main() {
 
     // User 3 predictions
     try {
-      await ponderChain.connect(user3).submitPrediction(1, 2, { value: stakeAmount }); // Lisk
+      await veto.connect(user3).submitPrediction(1, 2, { value: stakeAmount }); // Lisk
       console.log("  ✅ User3 predicted on Poll 1");
     } catch (e) {
       console.log("  ⚠️ User3 prediction failed:", e.message);
@@ -111,7 +111,7 @@ async function main() {
   }
 
   // Get poll count
-  const pollCount = await ponderChain.pollCount();
+  const pollCount = await veto.pollCount();
   console.log(`\n📊 Total polls created: ${pollCount.toString()}`);
 
   console.log("\n🎉 Seed data complete!");

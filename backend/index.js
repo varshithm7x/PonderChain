@@ -16,7 +16,7 @@ app.use(express.json());
 
 // Blockchain Configuration
 const RPC_URL = process.env.LISK_SEPOLIA_RPC_URL || 'https://rpc.sepolia-api.lisk.com';
-const CONTRACT_ADDRESS = process.env.PONDERCHAIN_ADDRESS;
+const CONTRACT_ADDRESS = process.env.VETO_ADDRESS;
 
 // ABI (Simplified for backend needs)
 const ABI = [

@@ -6,12 +6,12 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 
 /**
- * @title PonderChain
+ * @title Veto
  * @dev A decentralized predictive polling game on Lisk blockchain
  * Users earn rewards by correctly predicting the majority choice
  * Inspired by the Keynesian Beauty Contest concept
  */
-contract PonderChain is Ownable, ReentrancyGuard, Pausable {
+contract Veto is Ownable, ReentrancyGuard, Pausable {
     // ============ Constants ============
     uint256 public constant PLATFORM_FEE_PERCENT = 2; // 2% fee from reward pool
     uint256 public constant MIN_POLL_DURATION = 1 hours;

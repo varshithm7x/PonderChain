@@ -10,10 +10,10 @@ export default function DocsPage() {
       content: (
         <div className="space-y-4">
           <p className="text-lg font-bold">
-            Welcome to PonderChain, the decentralized predictive polling platform built on the Lisk blockchain.
+            Welcome to VETO, the decentralized predictive polling platform built on the Lisk blockchain.
           </p>
           <p>
-            PonderChain allows users to create polls, predict outcomes, and earn rewards based on the accuracy of their predictions. 
+            VETO allows users to create polls, predict outcomes, and earn rewards based on the accuracy of their predictions. 
             It leverages the transparency and security of blockchain technology to ensure fair play and immutable results.
           </p>
         </div>
@@ -27,7 +27,7 @@ export default function DocsPage() {
         <div className="space-y-4">
           <h3 className="text-xl font-black uppercase">1. Connect Your Wallet</h3>
           <p>
-            To interact with PonderChain, you need a Web3 wallet like MetaMask. Click the "Connect Wallet" button in the top right corner.
+            To interact with VETO, you need a Web3 wallet like MetaMask. Click the "Connect Wallet" button in the top right corner.
           </p>
           <div className="p-4 bg-white border-2 border-black shadow-neo-sm space-y-2">
             <p className="text-sm font-black uppercase border-b-2 border-black pb-1">Network Details</p>
@@ -75,7 +75,7 @@ export default function DocsPage() {
       content: (
         <div className="space-y-4">
           <p>
-            Anyone can create a poll on PonderChain. Here is how:
+            Anyone can create a poll on VETO. Here is how:
           </p>
           <ul className="list-disc list-inside space-y-2 font-bold">
             <li>Navigate to the "Create Poll" page.</li>
@@ -150,7 +150,7 @@ export default function DocsPage() {
       content: (
         <div className="space-y-4">
           <p>
-            PonderChain runs on smart contracts verified on the Lisk blockchain.
+            VETO runs on smart contracts verified on the Lisk blockchain.
           </p>
           <p>
             The code is open-source and transparent. We use standard security practices like ReentrancyGuard to protect user funds.
@@ -181,7 +181,7 @@ export default function DocsPage() {
             Documentation
           </h1>
           <p className="text-xl font-bold text-gray-600 max-w-2xl mx-auto">
-            Everything you need to know about using PonderChain.
+            Everything you need to know about using VETO.
           </p>
         </div>
 

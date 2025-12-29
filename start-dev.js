@@ -23,7 +23,7 @@ const backendDir = path.join(rootDir, 'backend');
 
 async function start() {
   const isTestnet = process.argv.includes('--testnet');
-  log(colors.bright, `🚀 Starting PonderChain Development Environment (${isTestnet ? 'Testnet' : 'Local'})...`);
+  log(colors.bright, `🚀 Starting Veto Development Environment (${isTestnet ? 'Testnet' : 'Local'})...`);
 
   if (isTestnet) {
     log(colors.yellow, "Skipping Hardhat Node & Deployment (Testnet Mode)");
@@ -84,10 +84,10 @@ function configureEnv(isTestnet = false) {
   }
 
   const deployment = JSON.parse(fs.readFileSync(deploymentPath, 'utf8'));
-  const { PonderChain, PonderNFT } = deployment.contracts;
+  const { Veto, VetoNFT } = deployment.contracts;
 
-  log(colors.cyan, `PonderChain: ${PonderChain}`);
-  log(colors.cyan, `PonderNFT:   ${PonderNFT}`);
+  log(colors.cyan, `Veto:    ${Veto}`);
+  log(colors.cyan, `VetoNFT: ${VetoNFT}`);
 
   // Update Frontend .env
   const frontendEnvPath = path.join(frontendDir, '.env');
@@ -107,20 +107,16 @@ function configureEnv(isTestnet = false) {
   };
 
   // Determine which variables to update based on network
-  let chainAddressKey = 'VITE_PONDERCHAIN_ADDRESS_LOCAL';
-  let nftAddressKey = 'VITE_PONDERNFT_ADDRESS_LOCAL';
+  let chainAddressKey = 'VITE_VETO_ADDRESS_LOCAL';
+  let nftAddressKey = 'VITE_VETONFT_ADDRESS_LOCAL';
 
   if (isTestnet) {
-    chainAddressKey = 'VITE_PONDERCHAIN_ADDRESS_TESTNET';
-    nftAddressKey = 'VITE_PONDERNFT_ADDRESS_TESTNET';
+    chainAddressKey = 'VITE_VETO_ADDRESS_TESTNET';
+    nftAddressKey = 'VITE_VETONFT_ADDRESS_TESTNET';
   }
 
-  frontendEnvContent = updateEnv(frontendEnvContent, chainAddressKey, PonderChain);
-  frontendEnvContent = updateEnv(frontendEnvContent, nftAddressKey, PonderNFT);
-  
-  // Also update legacy variables for backward compatibility if needed, or just leave them
-  // frontendEnvContent = updateEnv(frontendEnvContent, 'VITE_PONDERCHAIN_ADDRESS', PonderChain);
-  // frontendEnvContent = updateEnv(frontendEnvContent, 'VITE_PONDERNFT_ADDRESS', PonderNFT);
+  frontendEnvContent = updateEnv(frontendEnvContent, chainAddressKey, Veto);
+  frontendEnvContent = updateEnv(frontendEnvContent, nftAddressKey, VetoNFT);
   
   fs.writeFileSync(frontendEnvPath, frontendEnvContent);
   log(colors.green, `✅ Frontend .env updated (${isTestnet ? 'Testnet' : 'Local'} keys)`);
@@ -132,7 +128,7 @@ function configureEnv(isTestnet = false) {
     backendEnvContent = fs.readFileSync(backendEnvPath, 'utf8');
   }
 
-  backendEnvContent = updateEnv(backendEnvContent, 'PONDERCHAIN_ADDRESS', PonderChain);
+  backendEnvContent = updateEnv(backendEnvContent, 'VETO_ADDRESS', Veto);
   // Add other backend envs if needed
   
   fs.writeFileSync(backendEnvPath, backendEnvContent);
