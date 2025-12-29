@@ -11,7 +11,7 @@ export default function Navbar() {
   const [showNetworkDropdown, setShowNetworkDropdown] = useState(false)
   const location = useLocation()
   
-  const { account, chainId, isConnecting, connectWallet, disconnectWallet, switchNetwork } = useStore()
+  const { account, chainId, isConnecting, isSwitchingNetwork, connectWallet, disconnectWallet, switchNetwork } = useStore()
 
   const handleDisconnect = async () => {
     await disconnectWallet()
@@ -68,15 +68,25 @@ export default function Navbar() {
                 {/* Network Selector */}
                 <div className="relative">
                   <button
-                    onClick={() => setShowNetworkDropdown(!showNetworkDropdown)}
-                    className="flex items-center space-x-2 px-4 py-2 bg-white border-2 border-black shadow-neo-sm hover:shadow-neo transition-all"
+                    onClick={() => !isSwitchingNetwork && setShowNetworkDropdown(!showNetworkDropdown)}
+                    disabled={isSwitchingNetwork}
+                    className="flex items-center space-x-2 px-4 py-2 bg-white border-2 border-black shadow-neo-sm hover:shadow-neo transition-all disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    <div className={`w-3 h-3 border-2 border-black ${currentNetwork ? 'bg-neo-green' : 'bg-neo-pink'}`} />
-                    <span className="text-sm font-bold">{currentNetwork?.name || 'Unknown'}</span>
-                    <ChevronDown className="w-4 h-4" />
+                    {isSwitchingNetwork ? (
+                      <>
+                        <div className="w-3 h-3 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                        <span className="text-sm font-bold">Switching...</span>
+                      </>
+                    ) : (
+                      <>
+                        <div className={`w-3 h-3 border-2 border-black ${currentNetwork ? 'bg-neo-green' : 'bg-neo-pink'}`} />
+                        <span className="text-sm font-bold">{currentNetwork?.name || 'Unknown'}</span>
+                        <ChevronDown className="w-4 h-4" />
+                      </>
+                    )}
                   </button>
 
-                  {showNetworkDropdown && (
+                  {showNetworkDropdown && !isSwitchingNetwork && (
                     <motion.div
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}

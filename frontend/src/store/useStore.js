@@ -10,6 +10,7 @@ const useStore = create((set, get) => ({
   provider: null,
   signer: null,
   isConnecting: false,
+  isSwitchingNetwork: false,
   error: null,
 
   // Contracts
@@ -187,11 +188,14 @@ const useStore = create((set, get) => ({
     const network = Object.values(NETWORKS).find(n => n.chainId === targetChainId);
     if (!network) return false;
 
+    set({ isSwitchingNetwork: true });
+
     try {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: network.chainIdHex }],
       });
+      set({ isSwitchingNetwork: false });
       return true;
     } catch (switchError) {
       // Chain not added, try to add it
@@ -207,13 +211,16 @@ const useStore = create((set, get) => ({
               nativeCurrency: network.currency,
             }],
           });
+          set({ isSwitchingNetwork: false });
           return true;
         } catch (addError) {
           console.error('Failed to add network:', addError);
+          set({ isSwitchingNetwork: false });
           return false;
         }
       }
       console.error('Failed to switch network:', switchError);
+      set({ isSwitchingNetwork: false });
       return false;
     }
   },
