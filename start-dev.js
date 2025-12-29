@@ -27,7 +27,7 @@ async function start() {
 
   if (isTestnet) {
     log(colors.yellow, "Skipping Hardhat Node & Deployment (Testnet Mode)");
-    startServers();
+    configureEnv(true);
     return;
   }
 
@@ -70,12 +70,16 @@ function deployContracts() {
   }
 }
 
-function configureEnv() {
+function configureEnv(isTestnet = false) {
   log(colors.yellow, "Configuring Environment Variables...");
 
-  const deploymentPath = path.join(contractsDir, 'deployments', 'localhost.json');
+  const networkName = isTestnet ? 'liskSepolia' : 'localhost';
+  const deploymentPath = path.join(contractsDir, 'deployments', `${networkName}.json`);
   if (!fs.existsSync(deploymentPath)) {
-    log(colors.red, "❌ Deployment file not found!");
+    log(colors.red, `❌ Deployment file not found for ${networkName}!`);
+    if (isTestnet) {
+      log(colors.red, "   Run 'npm run deploy:lisk-sepolia' in contracts/ first.");
+    }
     process.exit(1);
   }
 

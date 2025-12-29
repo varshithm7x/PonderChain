@@ -154,55 +154,63 @@ Edit `.env`:
 
 ---
 
-## 🚀 Running Locally (Fastest Way)
+## 🚀 Running the Application
 
-We have a helper script `start-dev.js` that automates the local development workflow.
+We have a helper script `start-dev.js` that automates the workflow for both Local and Testnet environments.
 
-**What it does:**
-1.  Starts a local Hardhat Blockchain node.
-2.  Deploys the Smart Contracts to the local node.
-3.  **Automatically updates** the Frontend and Backend with the new Contract Address.
-4.  Starts the Backend API.
-5.  Starts the Frontend Application.
+### Option 1: Local Development (Full Stack Locally)
+
+Use this to run the Blockchain, Backend, and Frontend all on your machine.
 
 **Command:**
-
 ```bash
 # Run from the root directory
 node start-dev.js
 ```
 
-Once started:
+**What happens:**
+1.  Starts a local Hardhat Node (Blockchain).
+2.  Deploys contracts to `localhost`.
+3.  **Auto-configures** `.env` files with the new contract addresses.
+4.  Starts Backend & Frontend.
+
+**Access:**
 - **Frontend:** [http://localhost:3000](http://localhost:3000)
 - **Backend:** [http://localhost:3001](http://localhost:3001)
 - **Local Node:** [http://127.0.0.1:8545](http://127.0.0.1:8545)
 
-> **Note:** When using the local Hardhat node, you must import one of the generated "Account" private keys into MetaMask and switch MetaMask to `Localhost 8545`.
+> **Important:** Connect MetaMask to **Localhost 8545** and import a test private key.
 
 ---
 
-## 🌐 Running on Testnet (Lisk Sepolia)
+## 🌐 Option 2: Running on Testnet (Lisk Sepolia)
 
-If you want to run the frontend locally but interact with the live **Lisk Sepolia Testnet**:
+Use this to run the Frontend/Backend locally but interact with the **Live Lisk Sepolia Testnet**.
 
-1.  **Deploy Contracts (If not already deployed)**
-    ```bash
-    cd contracts
-    npx hardhat run scripts/deploy.js --network liskSepolia
-    ```
-    *Copy the deployed address.*
+### Step 1: Deploy Contracts (One-time setup)
+You need to deploy your contracts to the testnet first.
 
-2.  **Update Configuration**
-    - Update `VITE_PONDERCHAIN_ADDRESS` in `frontend/.env`.
-    - Update `PONDERCHAIN_ADDRESS` in `backend/.env`.
+```bash
+cd contracts
+npx hardhat run scripts/deploy.js --network liskSepolia
+```
+*This will create a `deployments/liskSepolia.json` file with your contract addresses.*
 
-3.  **Start the App**
-    ```bash
-    # Run from the root directory
-    node start-dev.js --testnet
-    ```
+### Step 2: Start the App
+Run the script with the `--testnet` flag.
 
-    *The `--testnet` flag tells the script to skip starting the local Hardhat node and skip auto-deployment.*
+```bash
+# Run from the root directory
+node start-dev.js --testnet
+```
+
+**What happens:**
+1.  Skips starting the local blockchain.
+2.  Reads contract addresses from `deployments/liskSepolia.json`.
+3.  **Auto-configures** `.env` files.
+4.  Starts Backend & Frontend.
+
+> **Important:** Connect MetaMask to **Lisk Sepolia**.
 
 ---
 
@@ -214,3 +222,32 @@ To run the smart contract test suite:
 cd contracts
 npx hardhat test
 ```
+
+---
+
+## ❓ Troubleshooting
+
+### Error: `Unable to connect to Localhost`
+
+This error appears in MetaMask when it is set to **Localhost 8545** but your local blockchain node is not running.
+
+**Solution:**
+1.  **If using Testnet:** Switch MetaMask network to **Lisk Sepolia**.
+2.  **If using Local:** Ensure you have started the environment by running `node start-dev.js` in the root directory.
+
+### Error: `Transaction execution reverted` or `Nonce too high`
+
+This usually happens when switching between Localhost and Testnet, or when restarting the Localhost node (which resets the chain).
+
+**Solution: Reset MetaMask Account**
+1.  Open MetaMask.
+2.  Go to **Settings** > **Advanced**.
+3.  Click **Clear Activity Tab Data** (or "Reset Account").
+4.  *This will clear your transaction history (fixing the nonce issue) but will NOT delete your funds or keys.*
+
+### Error: `Contract not found`
+
+Ensure you are connected to the correct network:
+- If running `node start-dev.js` (Local), MetaMask must be on **Localhost 8545**.
+- If running `node start-dev.js --testnet`, MetaMask must be on **Lisk Sepolia**.
+
