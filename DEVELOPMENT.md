@@ -7,7 +7,7 @@ This guide will help you set up **PonderChain** locally for development and test
 - **Node.js** (v16 or higher)
 - **Git**
 - **MetaMask** (Browser Extension)
-- **Lisk Sepolia ETH** (For Testnet deployment only) - [Optimism Superchain Faucet](https://console.optimism.io/faucet)
+- **Lisk Sepolia ETH** (For Testnet deployment only) - [Lisk Faucets Directory](https://docs.lisk.com/lisk-tools/faucets/) or [Optimism Superchain Faucet](https://console.optimism.io/faucet)
 
 ---
 

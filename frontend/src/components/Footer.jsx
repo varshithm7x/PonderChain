@@ -22,7 +22,7 @@ export default function Footer() {
     {
       title: 'Resources',
       links: [
-        { label: 'Documentation', href: '#', external: true },
+        { label: 'Documentation', href: '/docs' },
         { label: 'Smart Contract', href: 'https://sepolia-blockscout.lisk.com', external: true },
         { label: 'Lisk Network', href: 'https://lisk.com', external: true },
       ],

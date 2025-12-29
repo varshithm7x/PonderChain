@@ -8,6 +8,8 @@ import PollsPage from './pages/PollsPage'
 import CreatePollPage from './pages/CreatePollPage'
 import LeaderboardPage from './pages/LeaderboardPage'
 import ProfilePage from './pages/ProfilePage'
+import DocsPage from './pages/DocsPage'
+import ScrollToTop from './components/ScrollToTop'
 
 function App() {
   const { checkConnection } = useStore()
@@ -18,6 +20,7 @@ function App() {
 
   return (
     <Layout>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/polls" element={<PollsPage />} />
@@ -26,6 +29,7 @@ function App() {
         <Route path="/leaderboard" element={<LeaderboardPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/profile/:address" element={<ProfilePage />} />
+        <Route path="/docs" element={<DocsPage />} />
       </Routes>
     </Layout>
   )
