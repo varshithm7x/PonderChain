@@ -106,11 +106,24 @@ function configureEnv(isTestnet = false) {
     }
   };
 
-  frontendEnvContent = updateEnv(frontendEnvContent, 'VITE_PONDERCHAIN_ADDRESS', PonderChain);
-  frontendEnvContent = updateEnv(frontendEnvContent, 'VITE_PONDERNFT_ADDRESS', PonderNFT);
+  // Determine which variables to update based on network
+  let chainAddressKey = 'VITE_PONDERCHAIN_ADDRESS_LOCAL';
+  let nftAddressKey = 'VITE_PONDERNFT_ADDRESS_LOCAL';
+
+  if (isTestnet) {
+    chainAddressKey = 'VITE_PONDERCHAIN_ADDRESS_TESTNET';
+    nftAddressKey = 'VITE_PONDERNFT_ADDRESS_TESTNET';
+  }
+
+  frontendEnvContent = updateEnv(frontendEnvContent, chainAddressKey, PonderChain);
+  frontendEnvContent = updateEnv(frontendEnvContent, nftAddressKey, PonderNFT);
+  
+  // Also update legacy variables for backward compatibility if needed, or just leave them
+  // frontendEnvContent = updateEnv(frontendEnvContent, 'VITE_PONDERCHAIN_ADDRESS', PonderChain);
+  // frontendEnvContent = updateEnv(frontendEnvContent, 'VITE_PONDERNFT_ADDRESS', PonderNFT);
   
   fs.writeFileSync(frontendEnvPath, frontendEnvContent);
-  log(colors.green, "✅ Frontend .env updated");
+  log(colors.green, `✅ Frontend .env updated (${isTestnet ? 'Testnet' : 'Local'} keys)`);
 
   // Update Backend .env
   const backendEnvPath = path.join(backendDir, '.env');

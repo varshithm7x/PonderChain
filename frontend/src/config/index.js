@@ -12,18 +12,6 @@ export const NETWORKS = {
       decimals: 18,
     },
   },
-  liskMainnet: {
-    chainId: 1135,
-    chainIdHex: '0x46f',
-    name: 'Lisk Mainnet',
-    rpcUrl: 'https://rpc.api.lisk.com',
-    blockExplorer: 'https://blockscout.lisk.com',
-    currency: {
-      name: 'ETH',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-  },
   localhost: {
     chainId: 31337,
     chainIdHex: '0x7a69',
@@ -45,13 +33,13 @@ export const DEFAULT_NETWORK = NETWORKS.liskSepolia;
 export const CONTRACT_ADDRESSES = {
   // Lisk Sepolia Testnet
   4202: {
-    PonderChain: import.meta.env.VITE_PONDERCHAIN_ADDRESS || '0x0000000000000000000000000000000000000000',
-    PonderNFT: import.meta.env.VITE_PONDERNFT_ADDRESS || '0x0000000000000000000000000000000000000000',
+    PonderChain: import.meta.env.VITE_PONDERCHAIN_ADDRESS_TESTNET || import.meta.env.VITE_PONDERCHAIN_ADDRESS || '0x0000000000000000000000000000000000000000',
+    PonderNFT: import.meta.env.VITE_PONDERNFT_ADDRESS_TESTNET || import.meta.env.VITE_PONDERNFT_ADDRESS || '0x0000000000000000000000000000000000000000',
   },
   // Localhost
   31337: {
-    PonderChain: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-    PonderNFT: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+    PonderChain: import.meta.env.VITE_PONDERCHAIN_ADDRESS_LOCAL || '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    PonderNFT: import.meta.env.VITE_PONDERNFT_ADDRESS_LOCAL || '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
   },
 };
 

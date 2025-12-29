@@ -26,11 +26,6 @@ module.exports = {
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       gasPrice: 1000000000, // 1 gwei
     },
-    liskMainnet: {
-      url: process.env.LISK_MAINNET_RPC_URL || "https://rpc.api.lisk.com",
-      chainId: 1135,
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
-    },
   },
   etherscan: {
     apiKey: {
