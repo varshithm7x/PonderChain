@@ -97,7 +97,7 @@ export default function PollCard({ poll, index = 0 }) {
           <div>
             <p className="text-xs font-bold text-gray-500 uppercase">Pool</p>
             <p className="text-sm font-black text-neo-purple">
-              {parseFloat(poll.rewardPool).toFixed(4)} ETH
+              {parseFloat(poll.rewardPool).toFixed(5)} ETH
             </p>
           </div>
           {isActive && (

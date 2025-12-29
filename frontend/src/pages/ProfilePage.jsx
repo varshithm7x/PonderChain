@@ -34,7 +34,7 @@ export default function ProfilePage() {
     { label: 'TOTAL PREDICTIONS', value: userStats.totalPredictions, icon: Target, color: 'text-black', bg: 'bg-neo-blue' },
     { label: 'CORRECT PREDICTIONS', value: userStats.correctPredictions, icon: Award, color: 'text-black', bg: 'bg-neo-green' },
     { label: 'ACCURACY', value: `${userStats.accuracy}%`, icon: Zap, color: 'text-black', bg: 'bg-neo-yellow' },
-    { label: 'TOTAL EARNED', value: `${parseFloat(userStats.totalRewardsEarned).toFixed(4)} ETH`, icon: User, color: 'text-black', bg: 'bg-neo-pink' },
+    { label: 'TOTAL EARNED', value: `${parseFloat(userStats.totalRewardsEarned).toFixed(5)} ETH`, icon: User, color: 'text-black', bg: 'bg-neo-pink' },
   ]
 
   return (

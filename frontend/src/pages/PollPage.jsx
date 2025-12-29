@@ -103,6 +103,25 @@ export default function PollPage() {
     }
   }
 
+  const handleShare = async () => {
+    const shareData = {
+      title: `PonderChain: ${poll.question}`,
+      text: `Predict the outcome of "${poll.question}" on PonderChain and win rewards!`,
+      url: window.location.href,
+    }
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData)
+      } else {
+        await navigator.clipboard.writeText(window.location.href)
+        toast.success('Link copied to clipboard!')
+      }
+    } catch (err) {
+      console.error('Error sharing:', err)
+    }
+  }
+
   if (!poll) return <PageLoader />
 
   const totalVotes = poll.optionVotes.reduce((a, b) => a + b, 0)
@@ -110,6 +129,38 @@ export default function PollPage() {
   const isPendingClosure = poll.isActive && poll.timeRemaining <= 0
   const isClosed = !poll.isActive
   const hasPredicted = prediction?.hasPredicted
+
+  const calculateEstimatedReturn = () => {
+    if (!poll) return '0'
+    
+    // If user has already predicted
+    if (hasPredicted) {
+      const currentPool = parseFloat(poll.rewardPool)
+      const currentVotes = poll.optionVotes[prediction.optionIndex]
+      if (currentVotes === 0) return '0'
+      
+      // If user is the only one on this option, they get the whole pool
+      // Return exact string to avoid rounding discrepancies
+      if (currentVotes === 1) return poll.rewardPool
+      
+      const estimated = currentPool / currentVotes
+      return estimated.toFixed(6)
+    }
+
+    // If user is about to predict
+    if (selectedOption === null || !stakeAmount) return '0'
+    
+    const currentPool = parseFloat(poll.rewardPool)
+    const myStake = parseFloat(stakeAmount)
+    const currentVotes = poll.optionVotes[selectedOption]
+    
+    const newPool = currentPool + myStake
+    const newVotes = currentVotes + 1
+    
+    return (newPool / newVotes).toFixed(6)
+  }
+
+  const estimatedReturn = calculateEstimatedReturn()
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -218,9 +269,14 @@ export default function PollPage() {
                     <p className="text-xl font-black text-black uppercase">
                       {poll.options[prediction.optionIndex]}
                     </p>
-                    <p className="text-xs font-bold text-black mt-2">
-                      STAKE: {prediction.amount} ETH
-                    </p>
+                    <div className="flex justify-between items-center mt-2">
+                      <p className="text-xs font-bold text-black">
+                        STAKE: {prediction.amount} ETH
+                      </p>
+                      <p className="text-xs font-bold text-black bg-white px-2 py-1 border border-black">
+                        EST. RETURN: {estimatedReturn} ETH
+                      </p>
+                    </div>
                   </div>
 
                   {isPendingClosure && (
@@ -276,6 +332,13 @@ export default function PollPage() {
                     {account ? 'SUBMIT PREDICTION' : 'CONNECT WALLET'}
                   </button>
                   
+                  {selectedOption !== null && stakeAmount && (
+                    <div className="p-2 bg-neo-green border-2 border-black text-center shadow-neo-sm">
+                      <p className="text-xs font-bold text-black uppercase">ESTIMATED WINNINGS</p>
+                      <p className="text-lg font-black text-black">{estimatedReturn} ETH</p>
+                    </div>
+                  )}
+                  
                   <p className="text-xs font-bold text-black text-center">
                     MIN STAKE: 0.001 ETH
                   </p>
@@ -300,7 +363,10 @@ export default function PollPage() {
             </div>
 
             {/* Share */}
-            <button className="w-full flex items-center justify-center space-x-2 p-3 bg-white border-2 border-black shadow-neo hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-neo-lg transition-all text-black font-bold uppercase">
+            <button 
+              onClick={handleShare}
+              className="w-full flex items-center justify-center space-x-2 p-3 bg-white border-2 border-black shadow-neo hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-neo-lg transition-all text-black font-bold uppercase"
+            >
               <Share2 className="w-4 h-4" />
               <span>SHARE POLL</span>
             </button>

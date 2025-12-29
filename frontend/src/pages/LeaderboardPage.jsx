@@ -75,7 +75,7 @@ export default function LeaderboardPage() {
                       {entry.correctPredictions}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right font-black text-black">
-                      {parseFloat(entry.totalRewards).toFixed(4)} ETH
+                      {parseFloat(entry.totalRewards).toFixed(5)} ETH
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       <div className="inline-flex items-center space-x-1 px-2 py-1 border-2 border-black bg-neo-green text-black text-xs font-bold shadow-neo-sm">
