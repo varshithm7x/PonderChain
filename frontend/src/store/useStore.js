@@ -57,6 +57,12 @@ const useStore = create((set, get) => ({
       const network = await provider.getNetwork();
       const chainId = Number(network.chainId);
 
+      // Enforce Default Network (Testnet)
+      if (chainId !== DEFAULT_NETWORK.chainId) {
+        const switched = await get().switchNetwork(DEFAULT_NETWORK.chainId);
+        if (switched) return; // Stop execution, let chainChanged event handle re-connection
+      }
+
       // Initialize contracts
       const vetoAddress = getContractAddress('Veto', chainId);
       const vetoNFTAddress = getContractAddress('VetoNFT', chainId);
@@ -178,7 +184,7 @@ const useStore = create((set, get) => ({
 
   // Handle chain changes
   handleChainChanged: () => {
-    window.location.reload();
+    get().connectWallet();
   },
 
   // Switch Network

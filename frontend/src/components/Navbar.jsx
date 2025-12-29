@@ -23,6 +23,7 @@ export default function Navbar() {
     { path: '/create', label: 'Create Poll' },
     { path: '/leaderboard', label: 'Leaderboard' },
     { path: '/profile', label: 'Profile' },
+    { path: '/docs', label: 'Docs' },
   ]
 
   const currentNetwork = Object.values(NETWORKS).find(n => n.chainId === chainId)
