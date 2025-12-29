@@ -5,7 +5,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   const socialLinks = [
-    { icon: Github, href: 'https://github.com/ponderchain', label: 'GitHub' },
+    { icon: Github, href: 'https://github.com/varshithm7x/veto', label: 'GitHub' },
     { icon: Twitter, href: 'https://twitter.com/ponderchain', label: 'Twitter' },
     { icon: MessageCircle, href: 'https://discord.gg/ponderchain', label: 'Discord' },
   ]

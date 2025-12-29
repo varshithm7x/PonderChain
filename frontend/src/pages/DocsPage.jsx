@@ -177,7 +177,7 @@ export default function DocsPage() {
       >
         {/* Header */}
         <div className="text-center space-y-4 bg-white border-2 border-black shadow-neo p-8 md:p-12">
-          <h1 className="text-5xl md:text-7xl font-black text-black uppercase tracking-tighter">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-black text-black uppercase tracking-tighter break-words">
             Documentation
           </h1>
           <p className="text-xl font-bold text-gray-600 max-w-2xl mx-auto">
