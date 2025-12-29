@@ -97,6 +97,9 @@ const useStore = create((set, get) => ({
       ethereumProvider.on('accountsChanged', get().handleAccountsChanged);
       ethereumProvider.on('chainChanged', get().handleChainChanged);
 
+      // Clear manual disconnect flag
+      localStorage.removeItem('isDisconnected');
+
       return true;
     } catch (error) {
       console.error('Failed to connect wallet:', error);
@@ -110,6 +113,9 @@ const useStore = create((set, get) => ({
 
   // Check if wallet is already connected
   checkConnection: async () => {
+    // If user manually disconnected, don't auto-connect
+    if (localStorage.getItem('isDisconnected') === 'true') return false;
+
     let ethereumProvider = window.ethereum;
     
     if (window.ethereum?.providers?.length) {
@@ -130,11 +136,23 @@ const useStore = create((set, get) => ({
   },
 
   // Disconnect Wallet
-  disconnectWallet: () => {
+  disconnectWallet: async () => {
     if (window.ethereum) {
       window.ethereum.removeListener('accountsChanged', get().handleAccountsChanged);
       window.ethereum.removeListener('chainChanged', get().handleChainChanged);
+
+      try {
+        await window.ethereum.request({
+          method: "wallet_revokePermissions",
+          params: [{ eth_accounts: {} }]
+        });
+      } catch (e) {
+        console.error("Failed to revoke permissions", e);
+      }
     }
+
+    // Set manual disconnect flag
+    localStorage.setItem('isDisconnected', 'true');
 
     set({
       account: null,

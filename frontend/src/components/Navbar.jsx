@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Menu, X, Wallet, LogOut, ChevronDown } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'react-hot-toast'
 import useStore from '../store/useStore'
 import { NETWORKS } from '../config'
 
@@ -11,6 +12,11 @@ export default function Navbar() {
   const location = useLocation()
   
   const { account, chainId, isConnecting, connectWallet, disconnectWallet, switchNetwork } = useStore()
+
+  const handleDisconnect = async () => {
+    await disconnectWallet()
+    toast.success('Wallet disconnected')
+  }
 
   const navLinks = [
     { path: '/', label: 'Home' },
@@ -102,7 +108,7 @@ export default function Navbar() {
 
                 {/* Disconnect Button */}
                 <button
-                  onClick={disconnectWallet}
+                  onClick={handleDisconnect}
                   className="p-2 bg-neo-pink border-2 border-black shadow-neo-sm hover:shadow-neo transition-all text-black"
                   title="Disconnect"
                 >
@@ -163,7 +169,7 @@ export default function Navbar() {
                     <span className="text-sm font-mono font-bold text-white">{formatAddress(account)}</span>
                   </div>
                   <button
-                    onClick={disconnectWallet}
+                    onClick={handleDisconnect}
                     className="w-full px-4 py-3 bg-neo-pink border-2 border-black shadow-neo-sm hover:shadow-neo transition-all text-sm font-bold text-black"
                   >
                     Disconnect Wallet
