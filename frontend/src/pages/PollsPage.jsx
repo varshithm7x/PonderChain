@@ -5,13 +5,13 @@ import PollCard from '../components/PollCard'
 import { CardSkeleton } from '../components/LoadingSpinner'
 
 export default function PollsPage() {
-  const { activePolls, closedPolls, fetchActivePolls, fetchClosedPolls, isLoading } = useStore()
+  const { activePolls, closedPolls, fetchActivePolls, fetchClosedPolls, isLoading, account } = useStore()
   const [filter, setFilter] = useState('all') // 'all', 'active', 'closed'
 
   useEffect(() => {
     fetchActivePolls()
     fetchClosedPolls()
-  }, [])
+  }, [account])
 
   const allPolls = [...activePolls, ...closedPolls].sort((a, b) => b.id - a.id)
   

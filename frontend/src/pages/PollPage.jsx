@@ -23,6 +23,8 @@ export default function PollPage() {
     fetchUserPrediction, 
     submitPrediction, 
     distributeRewards,
+    closePoll,
+    fetchUserStats,
     account, 
     connectWallet 
   } = useStore()
@@ -80,8 +82,22 @@ export default function PollPage() {
       await distributeRewards(id)
       toast.success('Rewards distributed successfully!')
       loadData()
+      fetchUserStats(account) // Update user stats (balance/earnings)
     } catch (error) {
       toast.error(error.message || 'Failed to distribute rewards')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleFinalize = async () => {
+    setIsSubmitting(true)
+    try {
+      await closePoll(id)
+      toast.success('Poll finalized successfully!')
+      loadData()
+    } catch (error) {
+      toast.error(error.message || 'Failed to finalize poll')
     } finally {
       setIsSubmitting(false)
     }
@@ -90,7 +106,9 @@ export default function PollPage() {
   if (!poll) return <PageLoader />
 
   const totalVotes = poll.optionVotes.reduce((a, b) => a + b, 0)
-  const isActive = poll.isActive && poll.timeRemaining > 0
+  const isVotingOpen = poll.isActive && poll.timeRemaining > 0
+  const isPendingClosure = poll.isActive && poll.timeRemaining <= 0
+  const isClosed = !poll.isActive
   const hasPredicted = prediction?.hasPredicted
 
   return (
@@ -121,14 +139,14 @@ export default function PollPage() {
               <Trophy className="w-4 h-4 text-black" />
               <span className="text-black">{poll.rewardPool} ETH POOL</span>
             </div>
-            {isActive ? (
+            {isVotingOpen ? (
               <div className="flex items-center space-x-2 px-4 py-2 bg-neo-green border-2 border-black shadow-neo rounded-none">
                 <Clock className="w-4 h-4 text-black" />
                 <Countdown endTime={poll.endTime} compact />
               </div>
             ) : (
               <div className="px-4 py-2 bg-neo-pink border-2 border-black shadow-neo rounded-none text-black">
-                ENDED
+                {isPendingClosure ? 'PENDING FINALIZATION' : 'ENDED'}
               </div>
             )}
           </div>
@@ -143,20 +161,20 @@ export default function PollPage() {
                 : 0
               const isSelected = selectedOption === idx
               const isUserChoice = prediction?.optionIndex === idx
-              const isWinner = !isActive && idx === poll.winningOption
+              const isWinner = isClosed && idx === poll.winningOption
 
               return (
                 <button
                   key={idx}
-                  onClick={() => isActive && !hasPredicted && setSelectedOption(idx)}
-                  disabled={!isActive || hasPredicted}
+                  onClick={() => isVotingOpen && !hasPredicted && setSelectedOption(idx)}
+                  disabled={!isVotingOpen || hasPredicted}
                   className={`w-full relative overflow-hidden p-4 transition-all border-2 border-black shadow-neo hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-neo-lg active:translate-x-[0px] active:translate-y-[0px] active:shadow-none ${
                     isSelected
                       ? 'bg-neo-blue'
                       : isWinner
                       ? 'bg-neo-green'
                       : 'bg-white hover:bg-gray-50'
-                  } ${!isActive || hasPredicted ? 'cursor-default' : 'cursor-pointer'}`}
+                  } ${!isVotingOpen || hasPredicted ? 'cursor-default' : 'cursor-pointer'}`}
                 >
                   {/* Progress Bar */}
                   <div
@@ -205,23 +223,38 @@ export default function PollPage() {
                     </p>
                   </div>
 
-                  {!isActive && prediction.optionIndex === poll.winningOption && !prediction.hasClaimedReward && (
+                  {isPendingClosure && (
+                    <button
+                      onClick={handleFinalize}
+                      disabled={isSubmitting}
+                      className="w-full neo-button bg-neo-pink text-black"
+                    >
+                      {isSubmitting ? <LoadingSpinner size="sm" /> : 'FINALIZE POLL'}
+                    </button>
+                  )}
+
+                  {isClosed && !poll.rewardsDistributed && prediction.optionIndex === poll.winningOption && (
                     <button
                       onClick={handleClaim}
                       disabled={isSubmitting}
                       className="w-full neo-button bg-neo-green text-black"
                     >
-                      {isSubmitting ? <LoadingSpinner size="sm" /> : 'CLAIM REWARD'}
+                      {isSubmitting ? <LoadingSpinner size="sm" /> : 'DISTRIBUTE REWARDS'}
                     </button>
                   )}
 
-                  {!isActive && prediction.optionIndex === poll.winningOption && prediction.hasClaimedReward && (
-                    <div className="p-3 bg-neo-green border-2 border-black text-black font-bold text-center text-sm shadow-neo-sm">
-                      REWARD CLAIMED! 🎉
+                  {isClosed && poll.rewardsDistributed && prediction.optionIndex === poll.winningOption && (
+                    <div className="space-y-2">
+                      <div className="p-3 bg-neo-green border-2 border-black text-black font-bold text-center text-sm shadow-neo-sm">
+                        REWARDS DISTRIBUTED 🎉
+                      </div>
+                      <p className="text-xs font-bold text-black text-center">
+                        Check your wallet for the incoming transaction.
+                      </p>
                     </div>
                   )}
                 </div>
-              ) : isActive ? (
+              ) : isVotingOpen ? (
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-bold text-black mb-2 uppercase">Stake Amount (ETH)</label>
@@ -248,8 +281,20 @@ export default function PollPage() {
                   </p>
                 </div>
               ) : (
-                <div className="text-center font-bold text-black py-4 border-2 border-black bg-gray-100">
-                  THIS POLL HAS ENDED.
+                <div className="space-y-4">
+                  <div className="text-center font-bold text-black py-4 border-2 border-black bg-gray-100">
+                    THIS POLL HAS ENDED.
+                  </div>
+                  
+                  {isPendingClosure && (
+                    <button
+                      onClick={handleFinalize}
+                      disabled={isSubmitting}
+                      className="w-full neo-button bg-neo-pink text-black"
+                    >
+                      {isSubmitting ? <LoadingSpinner size="sm" /> : 'FINALIZE POLL'}
+                    </button>
+                  )}
                 </div>
               )}
             </div>

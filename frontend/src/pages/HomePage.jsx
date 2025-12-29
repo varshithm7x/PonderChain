@@ -7,12 +7,12 @@ import PollCard from '../components/PollCard'
 import { CardSkeleton } from '../components/LoadingSpinner'
 
 export default function HomePage() {
-  const { activePolls, closedPolls, fetchActivePolls, fetchClosedPolls, isLoading } = useStore()
+  const { activePolls, closedPolls, fetchActivePolls, fetchClosedPolls, isLoading, account } = useStore()
 
   useEffect(() => {
     fetchActivePolls()
     fetchClosedPolls()
-  }, [])
+  }, [account])
 
   const stats = [
     { label: 'Total Polls', value: activePolls.length + closedPolls.length, icon: TrendingUp, color: 'bg-neo-yellow' },
