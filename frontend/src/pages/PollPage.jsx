@@ -207,12 +207,12 @@ export default function PollPage() {
           {/* Options Column */}
           <div className="md:col-span-2 space-y-4">
             {poll.options.map((option, idx) => {
-              const showResults = hasPredicted || isClosed
+              const showResults = hasPredicted || !isVotingOpen
               const percentage = totalVotes > 0 
                 ? ((poll.optionVotes[idx] / totalVotes) * 100).toFixed(1) 
                 : 0
               const isSelected = selectedOption === idx
-              const isUserChoice = prediction?.optionIndex === idx
+              const isUserChoice = prediction?.hasPredicted && prediction?.optionIndex === idx
               const isWinner = isClosed && idx === poll.winningOption
 
               return (
