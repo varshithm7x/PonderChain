@@ -97,7 +97,13 @@ npx hardhat test
 
 ---
 
-## 🔗 Links
+## � Coming Soon
+
+We are planning to add images in polls soon, stay tuned!
+
+---
+
+## �🔗 Links
 
 - **Live Demo:** [https://ponderchain.vercel.app](https://ponderchain.vercel.app)
 - **Demo Video:** [YouTube Link]
