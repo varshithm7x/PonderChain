@@ -368,7 +368,7 @@ const useStore = create((set, get) => ({
   },
 
   // Create Poll
-  createPoll: async (question, options, durationInSeconds, rewardPoolInEth) => {
+  createPoll: async (question, options, optionImages, durationInSeconds, rewardPoolInEth) => {
     const { vetoContract } = get();
     if (!vetoContract) throw new Error('Contract not initialized');
 
@@ -376,6 +376,7 @@ const useStore = create((set, get) => ({
     const tx = await vetoContract.createPoll(
       question,
       options,
+      optionImages,
       durationInSeconds,
       { 
         value: ethers.parseEther(rewardPoolInEth),
@@ -446,6 +447,7 @@ function formatPoll(poll) {
     creator: poll.creator,
     question: poll.question,
     options: [...poll.options],
+    optionImages: [...poll.optionImages],
     rewardPool: ethers.formatEther(poll.rewardPool),
     startTime: Number(poll.startTime) * 1000, // Convert to milliseconds
     endTime: Number(poll.endTime) * 1000,

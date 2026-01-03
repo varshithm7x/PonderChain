@@ -103,3 +103,41 @@ export function ErrorModal({ isOpen, onClose, title = 'ERROR', message }) {
     </Modal>
   )
 }
+
+export function ImageModal({ isOpen, onClose, imageUrl, altText }) {
+  if (!isOpen) return null
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+
+      {/* Image Content */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        className="relative max-w-4xl max-h-[90vh] w-full flex items-center justify-center"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute -top-12 right-0 p-2 text-white hover:text-neo-yellow transition-colors"
+        >
+          <X className="w-8 h-8" />
+        </button>
+        <img 
+          src={imageUrl} 
+          alt={altText || 'Zoomed Image'} 
+          className="max-w-full max-h-[85vh] object-contain border-4 border-black shadow-neo-lg bg-white"
+        />
+      </motion.div>
+    </motion.div>
+  )
+}

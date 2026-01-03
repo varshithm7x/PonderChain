@@ -6,7 +6,7 @@ import { Users, Clock, Trophy, Share2, AlertCircle } from 'lucide-react'
 import useStore from '../store/useStore'
 import Countdown from '../components/Countdown'
 import LoadingSpinner, { PageLoader } from '../components/LoadingSpinner'
-import { ConfirmModal } from '../components/Modal'
+import { ConfirmModal, ImageModal } from '../components/Modal'
 
 export default function PollPage() {
   const { id } = useParams()
@@ -17,6 +17,7 @@ export default function PollPage() {
   const [stakeAmount, setStakeAmount] = useState('0.001')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
+  const [zoomedImage, setZoomedImage] = useState(null)
 
   const { 
     fetchPoll, 
@@ -214,13 +215,14 @@ export default function PollPage() {
               const isSelected = selectedOption === idx
               const isUserChoice = prediction?.hasPredicted && prediction?.optionIndex === idx
               const isWinner = isClosed && idx === poll.winningOption
+              const optionImage = poll.optionImages?.[idx]
 
               return (
                 <button
                   key={idx}
                   onClick={() => isVotingOpen && !hasPredicted && setSelectedOption(idx)}
                   disabled={!isVotingOpen || hasPredicted}
-                  className={`w-full relative overflow-hidden p-4 transition-all border-2 border-black shadow-neo hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-neo-lg active:translate-x-[0px] active:translate-y-[0px] active:shadow-none ${
+                  className={`w-full relative overflow-hidden transition-all border-2 border-black shadow-neo hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-neo-lg active:translate-x-[0px] active:translate-y-[0px] active:shadow-none ${
                     isSelected
                       ? 'bg-neo-blue'
                       : isWinner
@@ -236,24 +238,47 @@ export default function PollPage() {
                     />
                   )}
 
-                  <div className="relative flex items-center justify-between z-10">
-                    <div className="flex items-center space-x-3">
-                      <div className={`w-6 h-6 border-2 border-black flex items-center justify-center ${
-                        isSelected || isUserChoice
-                          ? 'bg-black text-white'
-                          : 'bg-white'
-                      }`}>
-                        {(isSelected || isUserChoice) && <div className="w-2 h-2 bg-white" />}
+                  <div className="relative z-10 flex">
+                    {/* Option Image */}
+                    {optionImage && (
+                      <div 
+                        className="w-24 h-24 md:w-32 md:h-32 flex-shrink-0 border-r-2 border-black bg-gray-100 cursor-zoom-in hover:opacity-80 transition-opacity"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          setZoomedImage(`https://ipfs.io/ipfs/${optionImage}`)
+                        }}
+                      >
+                        <img 
+                          src={`https://ipfs.io/ipfs/${optionImage}`} 
+                          alt={option}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
                       </div>
-                      <span className="font-bold text-black uppercase text-left">
-                        {option}
+                    )}
+
+                    <div className="flex-1 p-4 flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className={`w-6 h-6 border-2 border-black flex items-center justify-center flex-shrink-0 ${
+                          isSelected || isUserChoice
+                            ? 'bg-black text-white'
+                            : 'bg-white'
+                        }`}>
+                          {(isSelected || isUserChoice) && <div className="w-2 h-2 bg-white" />}
+                        </div>
+                        <span className="font-bold text-black uppercase text-left">
+                          {option}
+                        </span>
+                        {isWinner && <Trophy className="w-4 h-4 text-black" />}
+                        {isUserChoice && <span className="text-xs font-bold text-black bg-white px-1 border border-black">(YOUR CHOICE)</span>}
+                      </div>
+                      <span className="text-black font-mono font-bold ml-2">
+                        {showResults ? `${percentage}%` : '???'}
                       </span>
-                      {isWinner && <Trophy className="w-4 h-4 text-black" />}
-                      {isUserChoice && <span className="text-xs font-bold text-black bg-white px-1 border border-black">(YOUR CHOICE)</span>}
                     </div>
-                    <span className="text-black font-mono font-bold">
-                      {showResults ? `${percentage}%` : '???'}
-                    </span>
                   </div>
                 </button>
               )
@@ -386,6 +411,12 @@ export default function PollPage() {
         title="CONFIRM PREDICTION"
         message={`Are you sure you want to predict "${poll.options[selectedOption]}" with ${stakeAmount} ETH stake? This action cannot be undone.`}
         isLoading={isSubmitting}
+      />
+
+      <ImageModal 
+        isOpen={!!zoomedImage}
+        onClose={() => setZoomedImage(null)}
+        imageUrl={zoomedImage}
       />
     </div>
   )

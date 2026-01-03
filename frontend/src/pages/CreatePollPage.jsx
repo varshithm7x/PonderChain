@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
-import { Plus, Trash2, AlertCircle } from 'lucide-react'
+import { Plus, Trash2, AlertCircle, Upload, X } from 'lucide-react'
+import axios from 'axios'
 import useStore from '../store/useStore'
 import LoadingSpinner from '../components/LoadingSpinner'
+import { API_URL } from '../config'
 
 export default function CreatePollPage() {
   const navigate = useNavigate()
@@ -12,20 +14,30 @@ export default function CreatePollPage() {
   
   const [question, setQuestion] = useState('')
   const [options, setOptions] = useState(['', ''])
+  const [optionImages, setOptionImages] = useState([null, null]) // Stores File objects
+  const [optionImagePreviews, setOptionImagePreviews] = useState([null, null]) // Stores preview URLs
   const [duration, setDuration] = useState('24') // hours
   const [rewardPool, setRewardPool] = useState('0.001')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
 
   const handleAddOption = () => {
     if (options.length < 10) {
       setOptions([...options, ''])
+      setOptionImages([...optionImages, null])
+      setOptionImagePreviews([...optionImagePreviews, null])
     }
   }
 
   const handleRemoveOption = (index) => {
     if (options.length > 2) {
       const newOptions = options.filter((_, i) => i !== index)
+      const newImages = optionImages.filter((_, i) => i !== index)
+      const newPreviews = optionImagePreviews.filter((_, i) => i !== index)
+      
       setOptions(newOptions)
+      setOptionImages(newImages)
+      setOptionImagePreviews(newPreviews)
     }
   }
 
@@ -33,6 +45,56 @@ export default function CreatePollPage() {
     const newOptions = [...options]
     newOptions[index] = value
     setOptions(newOptions)
+  }
+
+  const handleOptionImageChange = (index, e) => {
+    const file = e.target.files[0]
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image size must be less than 5MB')
+        return
+      }
+      
+      const newImages = [...optionImages]
+      newImages[index] = file
+      setOptionImages(newImages)
+
+      const newPreviews = [...optionImagePreviews]
+      newPreviews[index] = URL.createObjectURL(file)
+      setOptionImagePreviews(newPreviews)
+    }
+  }
+
+  const removeOptionImage = (index) => {
+    const newImages = [...optionImages]
+    newImages[index] = null
+    setOptionImages(newImages)
+
+    const newPreviews = [...optionImagePreviews]
+    newPreviews[index] = null
+    setOptionImagePreviews(newPreviews)
+  }
+
+  const uploadImage = async (file) => {
+    if (!file) return ''
+    
+    const formData = new FormData()
+    formData.append('image', file)
+
+    try {
+      const uploadUrl = API_URL ? `${API_URL}/api/upload` : 'http://localhost:3001/api/upload'
+      
+      const response = await axios.post(uploadUrl, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      
+      return response.data.cid
+    } catch (error) {
+      console.error('Upload failed:', error)
+      throw new Error('Failed to upload image')
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -55,8 +117,28 @@ export default function CreatePollPage() {
 
     setIsSubmitting(true)
     try {
+      // Upload all images first
+      const toastId = toast.loading('Uploading images to IPFS...')
+      const uploadedCIDs = []
+      
+      try {
+        for (let i = 0; i < optionImages.length; i++) {
+          if (optionImages[i]) {
+            const cid = await uploadImage(optionImages[i])
+            uploadedCIDs.push(cid)
+          } else {
+            uploadedCIDs.push('') // Empty string for no image
+          }
+        }
+        toast.success('Images uploaded successfully!', { id: toastId })
+      } catch (error) {
+        toast.error('Failed to upload images', { id: toastId })
+        setIsSubmitting(false)
+        return
+      }
+
       const durationInSeconds = Number(duration) * 3600
-      const pollId = await createPoll(question, options, durationInSeconds, rewardPool)
+      const pollId = await createPoll(question, options, uploadedCIDs, durationInSeconds, rewardPool)
       
       if (pollId) {
         toast.success('Poll created successfully!')
@@ -108,24 +190,61 @@ export default function CreatePollPage() {
               Options
             </label>
             {options.map((option, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <input
-                  type="text"
-                  value={option}
-                  onChange={(e) => handleOptionChange(index, e.target.value)}
-                  placeholder={`Option ${index + 1}`}
-                  className="neo-input"
-                  maxLength={50}
-                />
-                {options.length > 2 && (
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveOption(index)}
-                    className="p-3 bg-neo-pink border-2 border-black shadow-neo-sm hover:shadow-neo transition-all text-black"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                )}
+              <div key={index} className="space-y-2 p-4 border-2 border-black bg-gray-50">
+                <div className="flex items-center space-x-2">
+                  <span className="font-bold text-black">#{index + 1}</span>
+                  <input
+                    type="text"
+                    value={option}
+                    onChange={(e) => handleOptionChange(index, e.target.value)}
+                    placeholder={`Option ${index + 1}`}
+                    className="neo-input flex-1"
+                    maxLength={50}
+                  />
+                  {options.length > 2 && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveOption(index)}
+                      className="p-3 bg-neo-pink border-2 border-black shadow-neo-sm hover:shadow-neo transition-all text-black"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Option Image Upload */}
+                <div className="flex items-center space-x-4">
+                  {!optionImagePreviews[index] ? (
+                    <label className="flex items-center space-x-2 cursor-pointer px-4 py-2 bg-white border-2 border-black shadow-neo-sm hover:bg-gray-100">
+                      <Upload className="w-4 h-4" />
+                      <span className="text-xs font-bold">ADD IMAGE</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleOptionImageChange(index, e)}
+                        className="hidden"
+                      />
+                    </label>
+                  ) : (
+                    <div className="relative w-20 h-20 border-2 border-black">
+                      <img 
+                        src={optionImagePreviews[index]} 
+                        alt={`Option ${index + 1}`} 
+                        className="w-full h-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeOptionImage(index)}
+                        className="absolute -top-2 -right-2 p-1 bg-red-500 text-white border border-black rounded-full hover:scale-110"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  )}
+                  <span className="text-xs font-bold text-gray-500">
+                    {optionImagePreviews[index] ? 'Image added' : 'Optional image'}
+                  </span>
+                </div>
               </div>
             ))}
             

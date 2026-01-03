@@ -25,6 +25,7 @@ contract Veto is Ownable, ReentrancyGuard, Pausable {
         address creator;
         string question;
         string[] options;
+        string[] optionImages; // IPFS CIDs for each option
         uint256 rewardPool;
         uint256 startTime;
         uint256 endTime;
@@ -49,6 +50,7 @@ contract Veto is Ownable, ReentrancyGuard, Pausable {
         address creator;
         string question;
         string[] options;
+        string[] optionImages;
         uint256 rewardPool;
         uint256 startTime;
         uint256 endTime;
@@ -151,17 +153,23 @@ contract Veto is Ownable, ReentrancyGuard, Pausable {
      * @dev Create a new poll with reward pool
      * @param _question The poll question
      * @param _options Array of option strings
+     * @param _optionImages Array of option image CIDs
      * @param _duration Duration of the poll in seconds
      */
     function createPoll(
         string memory _question,
         string[] memory _options,
+        string[] memory _optionImages,
         uint256 _duration
     ) external payable whenNotPaused nonReentrant returns (uint256) {
         require(bytes(_question).length > 0, "Question cannot be empty");
         require(
             _options.length >= MIN_OPTIONS && _options.length <= MAX_OPTIONS,
             "Invalid number of options"
+        );
+        require(
+            _optionImages.length == _options.length,
+            "Options and images length mismatch"
         );
         require(
             _duration >= MIN_POLL_DURATION && _duration <= MAX_POLL_DURATION,
@@ -179,6 +187,7 @@ contract Veto is Ownable, ReentrancyGuard, Pausable {
         newPoll.creator = msg.sender;
         newPoll.question = _question;
         newPoll.options = _options;
+        newPoll.optionImages = _optionImages;
         newPoll.rewardPool = actualRewardPool;
         newPoll.startTime = block.timestamp;
         newPoll.endTime = block.timestamp + _duration;
@@ -361,6 +370,7 @@ contract Veto is Ownable, ReentrancyGuard, Pausable {
             creator: poll.creator,
             question: poll.question,
             options: poll.options,
+            optionImages: poll.optionImages,
             rewardPool: poll.rewardPool,
             startTime: poll.startTime,
             endTime: poll.endTime,
@@ -422,6 +432,7 @@ contract Veto is Ownable, ReentrancyGuard, Pausable {
                     creator: poll.creator,
                     question: poll.question,
                     options: poll.options,
+                    optionImages: poll.optionImages,
                     rewardPool: poll.rewardPool,
                     startTime: poll.startTime,
                     endTime: poll.endTime,
@@ -465,6 +476,7 @@ contract Veto is Ownable, ReentrancyGuard, Pausable {
                     creator: poll.creator,
                     question: poll.question,
                     options: poll.options,
+                    optionImages: poll.optionImages,
                     rewardPool: poll.rewardPool,
                     startTime: poll.startTime,
                     endTime: poll.endTime,

@@ -1,9 +1,12 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Clock, Users, Trophy, ArrowRight, CheckCircle } from 'lucide-react'
 import Countdown from './Countdown'
+import { ImageModal } from './Modal'
 
 export default function PollCard({ poll, index = 0 }) {
+  const [zoomedImage, setZoomedImage] = useState(null)
   const isActive = poll.isActive && poll.timeRemaining > 0
   const totalVotes = poll.optionVotes.reduce((a, b) => a + b, 0)
 
@@ -59,11 +62,12 @@ export default function PollCard({ poll, index = 0 }) {
             : 0
           const isWinner = !isActive && idx === poll.winningOption
           const showResults = !isActive
+          const optionImage = poll.optionImages?.[idx]
 
           return (
             <div
               key={idx}
-              className={`relative overflow-hidden p-3 border-2 border-black ${
+              className={`relative overflow-hidden border-2 border-black ${
                 isWinner 
                   ? 'bg-neo-green' 
                   : 'bg-white'
@@ -78,13 +82,36 @@ export default function PollCard({ poll, index = 0 }) {
                   style={{ width: `${percentage}%`, opacity: 0.5 }}
                 />
               )}
-              <div className="relative flex items-center justify-between z-10">
-                <span className={`text-sm font-bold text-black`}>
-                  {option}
-                </span>
-                {showResults && (
-                  <span className="text-xs font-black text-black">{percentage}%</span>
+              <div className="relative flex z-10">
+                {/* Option Image */}
+                {optionImage && (
+                  <div 
+                    className="w-12 h-12 flex-shrink-0 border-r-2 border-black bg-gray-100 cursor-zoom-in hover:opacity-80 transition-opacity"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      setZoomedImage(`https://ipfs.io/ipfs/${optionImage}`)
+                    }}
+                  >
+                    <img 
+                      src={`https://ipfs.io/ipfs/${optionImage}`} 
+                      alt={option}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  </div>
                 )}
+                
+                <div className="flex-1 flex items-center justify-between p-3">
+                  <span className={`text-sm font-bold text-black`}>
+                    {option}
+                  </span>
+                  {showResults && (
+                    <span className="text-xs font-black text-black">{percentage}%</span>
+                  )}
+                </div>
               </div>
             </div>
           )
@@ -121,6 +148,12 @@ export default function PollCard({ poll, index = 0 }) {
         <span>{isActive ? 'Predict Now' : 'View Results'}</span>
         <ArrowRight className="w-4 h-4" />
       </Link>
+
+      <ImageModal 
+        isOpen={!!zoomedImage}
+        onClose={() => setZoomedImage(null)}
+        imageUrl={zoomedImage}
+      />
     </motion.div>
   )
 }

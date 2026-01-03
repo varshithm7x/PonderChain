@@ -24,6 +24,7 @@ export const VETO_ABI = [
       address creator,
       string question,
       string[] options,
+      string[] optionImages,
       uint256 rewardPool,
       uint256 startTime,
       uint256 endTime,
@@ -64,6 +65,7 @@ export const VETO_ABI = [
       address creator,
       string question,
       string[] options,
+      string[] optionImages,
       uint256 rewardPool,
       uint256 startTime,
       uint256 endTime,
@@ -81,6 +83,7 @@ export const VETO_ABI = [
       address creator,
       string question,
       string[] options,
+      string[] optionImages,
       uint256 rewardPool,
       uint256 startTime,
       uint256 endTime,
@@ -105,7 +108,7 @@ export const VETO_ABI = [
   "function getPollParticipants(uint256 _pollId) view returns (address[])",
   
   // Write Functions
-  "function createPoll(string memory _question, string[] memory _options, uint256 _duration) payable returns (uint256)",
+  "function createPoll(string memory _question, string[] memory _options, string[] memory _optionImages, uint256 _duration) payable returns (uint256)",
   "function submitPrediction(uint256 _pollId, uint256 _optionIndex) payable",
   "function closePoll(uint256 _pollId)",
   "function distributeRewards(uint256 _pollId)",

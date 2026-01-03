@@ -54,7 +54,9 @@ export const getContractAddress = (contractName, chainId) => {
 };
 
 // API Configuration
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const ENV_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+export const API_BASE_URL = ENV_API_URL;
+export const API_URL = ENV_API_URL.replace(/\/api\/?$/, '');
 
 // App Configuration
 export const APP_CONFIG = {
