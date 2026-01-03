@@ -61,38 +61,38 @@ export default function Countdown({ endTime, compact = false, onEnd = () => {} }
   }
 
   return (
-    <div className="flex items-center space-x-4">
+    <div className="flex items-center space-x-2">
       {timeLeft.days > 0 && (
         <div className="text-center">
-          <div className="bg-white border-2 border-black shadow-neo-sm px-4 py-2 min-w-[60px]">
-            <span className="text-2xl font-black text-black font-mono">{timeLeft.days}</span>
+          <div className="bg-white border-2 border-black shadow-neo-sm px-2 py-1 min-w-[40px]">
+            <span className="text-lg font-black text-black font-mono">{timeLeft.days}</span>
           </div>
-          <span className="text-xs font-bold text-black mt-1 uppercase">Days</span>
+          <span className="text-[10px] font-bold text-black mt-1 uppercase">Days</span>
         </div>
       )}
       <div className="text-center">
-        <div className="bg-white border-2 border-black shadow-neo-sm px-4 py-2 min-w-[60px]">
-          <span className="text-2xl font-black text-black font-mono">
+        <div className="bg-white border-2 border-black shadow-neo-sm px-2 py-1 min-w-[40px]">
+          <span className="text-lg font-black text-black font-mono">
             {timeLeft.hours.toString().padStart(2, '0')}
           </span>
         </div>
-        <span className="text-xs font-bold text-black mt-1 uppercase">Hours</span>
+        <span className="text-[10px] font-bold text-black mt-1 uppercase">Hours</span>
       </div>
       <div className="text-center">
-        <div className="bg-white border-2 border-black shadow-neo-sm px-4 py-2 min-w-[60px]">
-          <span className="text-2xl font-black text-black font-mono">
+        <div className="bg-white border-2 border-black shadow-neo-sm px-2 py-1 min-w-[40px]">
+          <span className="text-lg font-black text-black font-mono">
             {timeLeft.minutes.toString().padStart(2, '0')}
           </span>
         </div>
-        <span className="text-xs font-bold text-black mt-1 uppercase">Mins</span>
+        <span className="text-[10px] font-bold text-black mt-1 uppercase">Mins</span>
       </div>
       <div className="text-center">
-        <div className="bg-white border-2 border-black shadow-neo-sm px-4 py-2 min-w-[60px]">
-          <span className="text-2xl font-black text-black font-mono animate-pulse">
+        <div className="bg-white border-2 border-black shadow-neo-sm px-2 py-1 min-w-[40px]">
+          <span className="text-lg font-black text-black font-mono animate-pulse">
             {timeLeft.seconds.toString().padStart(2, '0')}
           </span>
         </div>
-        <span className="text-xs font-bold text-black mt-1 uppercase">Secs</span>
+        <span className="text-[10px] font-bold text-black mt-1 uppercase">Secs</span>
       </div>
     </div>
   )
