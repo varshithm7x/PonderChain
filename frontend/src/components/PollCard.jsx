@@ -4,11 +4,20 @@ import { motion } from 'framer-motion'
 import { Clock, Users, Trophy, ArrowRight, CheckCircle } from 'lucide-react'
 import Countdown from './Countdown'
 import { ImageModal } from './Modal'
+import useStore from '../store/useStore'
 
 export default function PollCard({ poll, index = 0 }) {
   const [zoomedImage, setZoomedImage] = useState(null)
+  const { currency, ethPrice } = useStore()
   const isActive = poll.isActive && poll.timeRemaining > 0
   const totalVotes = poll.optionVotes.reduce((a, b) => a + b, 0)
+
+  const formatAmount = (amount) => {
+    if (currency === 'USD') {
+      return `$${(parseFloat(amount) * ethPrice).toFixed(2)}`
+    }
+    return `${parseFloat(amount).toFixed(5)} ETH`
+  }
 
   const getMaxVotedOption = () => {
     if (totalVotes === 0) return null
@@ -129,7 +138,7 @@ export default function PollCard({ poll, index = 0 }) {
           <div>
             <p className="text-xs font-bold text-gray-500 uppercase">Pool</p>
             <p className="text-sm font-black text-neo-purple">
-              {parseFloat(poll.rewardPool).toFixed(5)} ETH
+              {formatAmount(poll.rewardPool)}
             </p>
           </div>
           {isActive && (

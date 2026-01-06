@@ -10,7 +10,7 @@ import { API_URL } from '../config'
 
 export default function CreatePollPage() {
   const navigate = useNavigate()
-  const { createPoll, account, connectWallet } = useStore()
+  const { createPoll, account, connectWallet, currency, ethPrice } = useStore()
   
   const [question, setQuestion] = useState('')
   const [options, setOptions] = useState(['', ''])
@@ -281,7 +281,8 @@ export default function CreatePollPage() {
 
             <div className="space-y-2">
               <label className="block text-sm font-black text-black uppercase">
-                Initial Reward Pool (ETH)
+                Initial Reward Pool (ETH) 
+                {currency === 'USD' && <span className="text-gray-500 font-normal ml-2">Currently: ${(parseFloat(rewardPool || 0) * ethPrice).toFixed(2)}</span>}
               </label>
               <input
                 type="number"

@@ -1,3 +1,4 @@
+import { ethers } from 'ethers'
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -27,7 +28,9 @@ export default function PollPage() {
     closePoll,
     fetchUserStats,
     account, 
-    connectWallet 
+    connectWallet,
+    currency,
+    ethPrice
   } = useStore()
 
   useEffect(() => {
@@ -161,6 +164,13 @@ export default function PollPage() {
     return (newPool / newVotes).toFixed(6)
   }
 
+  const formatAmount = (amount) => {
+    if (currency === 'USD') {
+      return `$${(parseFloat(amount) * ethPrice).toFixed(2)}`
+    }
+    return `${parseFloat(amount).toFixed(5)} ETH`
+  }
+
   const estimatedReturn = calculateEstimatedReturn()
 
   return (
@@ -189,7 +199,7 @@ export default function PollPage() {
             </div>
             <div className="flex items-center space-x-2 px-4 py-2 bg-neo-yellow border-2 border-black shadow-neo rounded-none">
               <Trophy className="w-4 h-4 text-black" />
-              <span className="text-black">{poll.rewardPool} ETH POOL</span>
+              <span className="text-black">{formatAmount(poll.rewardPool)} POOL</span>
             </div>
             {isVotingOpen ? (
               <div className="flex items-center space-x-2 px-4 py-2 bg-neo-green border-2 border-black shadow-neo rounded-none">
@@ -301,10 +311,10 @@ export default function PollPage() {
                     </p>
                     <div className="flex justify-between items-center mt-2">
                       <p className="text-xs font-bold text-black">
-                        STAKE: {prediction.amount} ETH
+                        STAKE: {formatAmount(prediction.amount)}
                       </p>
                       <p className="text-xs font-bold text-black bg-white px-2 py-1 border border-black">
-                        EST. RETURN: {estimatedReturn} ETH
+                        EST. RETURN: {formatAmount(estimatedReturn)}
                       </p>
                     </div>
                   </div>
@@ -343,7 +353,10 @@ export default function PollPage() {
               ) : isVotingOpen ? (
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-bold text-black mb-2 uppercase">Stake Amount (ETH)</label>
+                    <label className="block text-sm font-bold text-black mb-2 uppercase">
+                      Stake Amount (ETH)
+                      {currency === 'USD' && <span className="text-gray-500 font-normal ml-2">~ ${(parseFloat(stakeAmount || 0) * ethPrice).toFixed(2)}</span>}
+                    </label>
                     <input
                       type="number"
                       value={stakeAmount}
@@ -365,12 +378,12 @@ export default function PollPage() {
                   {selectedOption !== null && stakeAmount && (
                     <div className="p-2 bg-neo-green border-2 border-black text-center shadow-neo-sm">
                       <p className="text-xs font-bold text-black uppercase">ESTIMATED WINNINGS</p>
-                      <p className="text-lg font-black text-black">{estimatedReturn} ETH</p>
+                      <p className="text-lg font-black text-black">{formatAmount(estimatedReturn)}</p>
                     </div>
                   )}
                   
                   <p className="text-xs font-bold text-black text-center">
-                    MIN STAKE: 0.001 ETH
+                    MIN STAKE: 0.001 ETH {currency === 'USD' && `(~$${(0.001 * ethPrice).toFixed(2)})`}
                   </p>
                 </div>
               ) : (
@@ -409,7 +422,7 @@ export default function PollPage() {
         onClose={() => setShowConfirm(false)}
         onConfirm={confirmPrediction}
         title="CONFIRM PREDICTION"
-        message={`Are you sure you want to predict "${poll.options[selectedOption]}" with ${stakeAmount} ETH stake? This action cannot be undone.`}
+        message={`Are you sure you want to predict "${poll.options[selectedOption]}" with ${stakeAmount} ETH ${currency === 'USD' ? `(~$${(parseFloat(stakeAmount) * ethPrice).toFixed(2)})` : ''} stake? This action cannot be undone.`}
         isLoading={isSubmitting}
       />
 

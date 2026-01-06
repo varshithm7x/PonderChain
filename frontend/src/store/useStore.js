@@ -26,6 +26,22 @@ const useStore = create((set, get) => ({
   userPredictions: {},
   isLoading: false,
 
+  // Currency State
+  currency: 'ETH', // 'ETH' or 'USD'
+  ethPrice: 0,
+
+  setCurrency: (currency) => set({ currency }),
+  
+  fetchEthPrice: async () => {
+    try {
+      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
+      const data = await response.json();
+      set({ ethPrice: data.ethereum.usd });
+    } catch (error) {
+      console.error('Failed to fetch ETH price:', error);
+    }
+  },
+
   // Connect Wallet
   connectWallet: async () => {
     let ethereumProvider = window.ethereum;

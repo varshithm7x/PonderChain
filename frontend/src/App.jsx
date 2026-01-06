@@ -12,10 +12,14 @@ import DocsPage from './pages/DocsPage'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
-  const { checkConnection } = useStore()
+  const { checkConnection, fetchEthPrice } = useStore()
 
   useEffect(() => {
     checkConnection()
+    fetchEthPrice()
+    // Refresh price every 5 minutes
+    const interval = setInterval(fetchEthPrice, 300000)
+    return () => clearInterval(interval)
   }, [])
 
   return (

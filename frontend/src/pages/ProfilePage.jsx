@@ -1,15 +1,22 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { User, Award, Target, Zap } from 'lucide-react'
+import { User, Award, Target, Zap, Settings } from 'lucide-react'
 import useStore from '../store/useStore'
 import { PageLoader } from '../components/LoadingSpinner'
 
 export default function ProfilePage() {
   const { address } = useParams()
-  const { account, userStats, fetchUserStats, connectWallet } = useStore()
+  const { account, userStats, fetchUserStats, connectWallet, currency, setCurrency, ethPrice } = useStore()
   
   const targetAddress = address || account
+
+  const formatAmount = (amount) => {
+    if (currency === 'USD') {
+      return `$${(parseFloat(amount) * ethPrice).toFixed(2)}`
+    }
+    return `${parseFloat(amount).toFixed(5)} ETH`
+  }
 
   useEffect(() => {
     if (targetAddress) {
@@ -34,7 +41,7 @@ export default function ProfilePage() {
     { label: 'TOTAL PREDICTIONS', value: userStats.totalPredictions, icon: Target, color: 'text-black', bg: 'bg-neo-blue' },
     { label: 'CORRECT PREDICTIONS', value: userStats.correctPredictions, icon: Award, color: 'text-black', bg: 'bg-neo-green' },
     { label: 'ACCURACY', value: `${userStats.accuracy}%`, icon: Zap, color: 'text-black', bg: 'bg-neo-yellow' },
-    { label: 'TOTAL EARNED', value: `${parseFloat(userStats.totalRewardsEarned).toFixed(5)} ETH`, icon: User, color: 'text-black', bg: 'bg-neo-pink' },
+    { label: 'TOTAL EARNED', value: formatAmount(userStats.totalRewardsEarned), icon: User, color: 'text-black', bg: 'bg-neo-pink' },
   ]
 
   return (
@@ -45,14 +52,29 @@ export default function ProfilePage() {
         className="space-y-8"
       >
         {/* Header */}
-        <div className="flex items-center space-x-4 mb-8 p-6 border-2 border-black shadow-neo bg-white">
-          <div className="w-20 h-20 border-2 border-black bg-neo-yellow flex items-center justify-center text-3xl font-black text-black">
-            {targetAddress.slice(2, 4)}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8 p-6 border-2 border-black shadow-neo bg-white">
+          <div className="flex items-center space-x-4">
+            <div className="w-20 h-20 border-2 border-black bg-neo-yellow flex items-center justify-center text-3xl font-black text-black">
+              {targetAddress.slice(2, 4)}
+            </div>
+            <div>
+              <h1 className="text-3xl font-black text-black uppercase">USER PROFILE</h1>
+              <p className="text-black font-mono font-bold break-all">{targetAddress}</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-3xl font-black text-black uppercase">USER PROFILE</h1>
-            <p className="text-black font-mono font-bold">{targetAddress}</p>
-          </div>
+          
+          {/* Settings / Actions */}
+          {(!address || address === account) && (
+            <div className="flex items-center space-x-4">
+               <button
+                onClick={() => setCurrency(currency === 'ETH' ? 'USD' : 'ETH')}
+                className="px-4 py-2 bg-white border-2 border-black shadow-neo-sm hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-neo transition-all text-sm font-bold flex items-center space-x-2"
+              >
+                <Settings className="w-4 h-4" />
+                <span>DISPLAY: {currency}</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Stats Grid */}

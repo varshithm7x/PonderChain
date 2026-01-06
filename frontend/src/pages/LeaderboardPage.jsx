@@ -5,11 +5,18 @@ import useStore from '../store/useStore'
 import { PageLoader } from '../components/LoadingSpinner'
 
 export default function LeaderboardPage() {
-  const { leaderboard, fetchLeaderboard, isLoading } = useStore()
+  const { leaderboard, fetchLeaderboard, isLoading, currency, ethPrice } = useStore()
 
   useEffect(() => {
     fetchLeaderboard()
   }, [])
+
+  const formatAmount = (amount) => {
+    if (currency === 'USD') {
+      return `$${(parseFloat(amount) * ethPrice).toFixed(2)}`
+    }
+    return `${parseFloat(amount).toFixed(5)} ETH`
+  }
 
   if (isLoading && leaderboard.length === 0) return <PageLoader />
 
@@ -75,7 +82,7 @@ export default function LeaderboardPage() {
                       {entry.correctPredictions}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right font-black text-black">
-                      {parseFloat(entry.totalRewards).toFixed(5)} ETH
+                      {formatAmount(entry.totalRewards)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       <div className="inline-flex items-center space-x-1 px-2 py-1 border-2 border-black bg-neo-green text-black text-xs font-bold shadow-neo-sm">

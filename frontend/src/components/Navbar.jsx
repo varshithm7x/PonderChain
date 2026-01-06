@@ -11,7 +11,7 @@ export default function Navbar() {
   const [showNetworkDropdown, setShowNetworkDropdown] = useState(false)
   const location = useLocation()
   
-  const { account, chainId, isConnecting, isSwitchingNetwork, connectWallet, disconnectWallet, switchNetwork } = useStore()
+  const { account, chainId, isConnecting, isSwitchingNetwork, connectWallet, disconnectWallet, switchNetwork, currency, setCurrency } = useStore()
 
   const handleDisconnect = async () => {
     await disconnectWallet()
